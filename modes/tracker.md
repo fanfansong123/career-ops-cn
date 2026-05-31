@@ -1,23 +1,24 @@
-# Modo: tracker — Tracker de Aplicaciones
+# Mode: tracker -- 投递追踪表
 
-Lee y muestra `data/applications.md`.
+读取并展示 `data/applications.md`。
 
-**Formato del tracker:**
+**追踪表格式:**
 ```markdown
-| # | Fecha | Empresa | Rol | Score | Estado | PDF | Report |
+| # | 日期 | 公司 | 岗位 | 评分 | 状态 | PDF | 报告 |
 ```
 
-Estados posibles: `Evaluada` → `Aplicado` → `Respondido` → `Contacto` → `Entrevista` → `Oferta` / `Rechazada` / `Descartada` / `NO APLICAR`
+状态流转：`已评估` → `已投递` → `已回复` → `已联系` → `面试中` → `Offer` / `被拒` / `已放弃` / `不建议投`
 
-- `Aplicado` = el candidato envió su candidatura
-- `Respondido` = Un recruiter/empresa contactó y el candidato respondió (inbound)
-- `Contacto` = El candidato contactó proactivamente a alguien de la empresa (outbound, ej: LinkedIn power move)
+- `已投递` = 候选人已提交申请
+- `已回复` = HR/公司主动联系且候选人已回复（被动）
+- `已联系` = 候选人主动联系了公司人员（主动外联）
+- `面试中` = 进入面试流程
 
-Si el usuario pide actualizar un estado, editar la fila correspondiente.
+如果用户要求更新状态，编辑对应行。
 
-Mostrar también estadísticas:
-- Total de aplicaciones
-- Por estado
-- Score promedio
-- % con PDF generado
-- % con report generado
+同时展示统计：
+- 总申请数
+- 按状态分布
+- 平均评分
+- PDF 生成比例
+- 报告生成比例

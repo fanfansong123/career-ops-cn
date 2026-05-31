@@ -1,47 +1,47 @@
-# Mode: deep — Deep Research Prompt
+# Mode: deep -- 深度公司研究
 
-Generate a structured prompt for Perplexity/Claude/ChatGPT with 6 axes:
+生成结构化研究提示，包含 6 个维度：
 
 ```text
-## Deep Research: [Company] — [Role]
+## 深度研究: [公司] — [岗位]
 
-Context: I am evaluating a candidacy for [role] at [company]. I need actionable information for the interview.
+背景: 我正在评估 [公司] 的 [岗位] 申请。需要面试用的可行情报。
 
-### 1. AI Strategy
-- What products/features use AI/ML?
-- What is their AI stack? (models, infrastructure, tools)
-- Do they have an engineering blog? What do they publish?
-- What papers or talks have they presented on AI?
+### 1. 技术/AI 战略
+- 产品/功能中使用了哪些 AI/ML 技术？
+- 技术栈是什么？（模型、基础设施、工具）
+- 有技术博客吗？发布什么内容？
+- 在 AI 领域发表过什么论文或演讲？
 
-### 2. Recent moves (last 6 months)
-- Relevant hires in AI/ML/product?
-- Acquisitions or partnerships?
-- Product launches or pivots?
-- Funding rounds or leadership changes?
+### 2. 近期动态（最近6个月）
+- 相关领域的招聘动态？
+- 收购或合作？
+- 产品发布或战略转向？
+- 融资轮次或管理层变动？
 
-### 3. Engineering culture
-- How do they ship? (deployment cadence, CI/CD)
-- Monorepo or multirepo?
-- What languages/frameworks do they use?
-- Remote-first or office-first?
-- Glassdoor/Blind reviews about engineering culture?
+### 3. 工程文化
+- 如何交付？（发布节奏、CI/CD）
+- 单体仓库还是多仓库？
+- 使用什么语言/框架？
+- 远程优先还是现场优先？
+- 脉脉/看准/知乎上关于工程文化的评价？
 
-### 4. Likely challenges
-- What scaling problems do they have?
-- Reliability, cost, latency challenges?
-- Are they migrating anything? (infrastructure, models, platforms)
-- What pain points do people mention in reviews?
+### 4. 可能的技术挑战
+- 有什么扩展性问题？
+- 可靠性、成本、延迟挑战？
+- 是否在进行技术迁移？
+- 员工评价中提到的痛点？
 
-### 5. Competitors and differentiation
-- Who are their main competitors?
-- What is their moat/differentiator?
-- How are they positioned vs competitors?
+### 5. 竞品和差异化
+- 主要竞品是谁？
+- 护城河/差异化是什么？
+- 与竞品相比定位如何？
 
-### 6. Candidate angle
-Given my profile (read from cv.md and profile.yml for specific experience):
-- What unique value do I bring to this team?
-- Which of my projects are most relevant?
-- What story should I tell in the interview?
+### 6. 候选人角度
+根据我的背景（从 cv.md 和 profile.yml 读取具体经历）：
+- 我能为这个团队带来什么独特价值？
+- 我最相关的项目是什么？
+- 面试时应该讲什么故事？
 ```
 
-Personalize each section with the specific context of the job being evaluated.
+为每个评估的岗位个性化定制每个维度。

@@ -1,217 +1,231 @@
-# Mode: job — Full A-G Evaluation
+# Mode: oferta -- 完整 A-G 岗位评估
 
-When the candidate pastes a job (text or URL), ALWAYS deliver the 7 blocks (A-F evaluation + G legitimacy):
+当候选人粘贴岗位（文本或URL）时，始终输出 7 个模块（A-F 评估 + G 真实性）：
 
-## Step 0 — Archetype Detection
+## Step 0 — 岗位类型检测
 
-Classify the job into one of the 6 archetypes (see `_shared.md`). If it is a hybrid, indicate the 2 closest ones. This determines:
-- Which proof points to prioritize in block B
-- How to rewrite the summary in block E
-- Which STAR stories to prepare in block F
+将岗位归类为以下类型之一（见 `_shared.md`）。如果是混合类型，标注最接近的 2 个。这决定了：
+- Block B 中优先展示哪些成果证明
+- Block E 中如何重写职业概述
+- Block F 中准备哪些面试故事
 
-## Block A — Role Summary
+## Block A — 岗位概要
 
-Table with:
-- Archetype detected
-- Domain (platform/agentic/LLMOps/ML/enterprise)
-- Function (build/consult/manage/deploy)
-- Seniority
-- Remote (full/hybrid/onsite)
-- Team size (if mentioned)
-- TL;DR in 1 sentence
+表格：
+- 检测到的岗位类型
+- 领域（后端/大模型/数据/基础架构/前端/管理）
+- 职能（研发/架构/管理/咨询）
+- 级别（初级/中级/高级/资深/专家/总监）
+- 工作方式（现场/混合/远程）
+- 团队规模（如提及）
+- 一句话总结
 
-## Block B — Match with CV
+## Block B — 简历匹配度
 
-Read `cv.md`. Create a table with each JD requirement mapped to exact lines in the CV.
+读取 `cv.md`。创建表格，将每个 JD 要求映射到简历中的具体行。
 
-**Adapted to the archetype:**
-- If FDE → prioritize delivery speed and client-facing proof points
-- If SA → prioritize system design and integrations
-- If PM → prioritize product discovery and metrics
-- If LLMOps → prioritize evals, observability, pipelines
-- If Agentic → prioritize multi-agent, HITL, orchestration
-- If Transformation → prioritize change management, adoption, scaling
+**按岗位类型调整：**
+- 后端架构 → 优先高并发、分布式、架构设计相关经历
+- AI/大模型 → 优先 RAG、Agent、模型部署、Prompt Engineering 相关经历
+- 基础架构 → 优先 K8s、CI/CD、监控、中间件相关经历
+- 数据工程 → 优先数仓、ETL、Flink/Spark 相关经历
+- 技术管理 → 优先团队管理、技术规划、跨部门协作经历
+- 客户端/前端 → 优先小程序、跨端、性能优化经历
 
-**Gaps** section with mitigation strategy for each. For each gap:
-1. Is it a hard blocker or a nice-to-have?
-2. Can the candidate demonstrate adjacent experience?
-3. Is there a portfolio project that covers this gap?
-4. Concrete mitigation plan (phrase for cover letter, quick project, etc.)
+**差距分析**部分，每个差距提供缓解策略：
+1. 是硬性 blocker 还是 nice-to-have？
+2. 候选人是否有相邻经验可以证明？
+3. 是否有作品集项目覆盖这个差距？
+4. 具体缓解方案（求职信措辞、快速补项目等）
 
-## Block C — Level and Strategy
+## Block C — 级别与策略
 
-1. **Level detected** in the JD vs **candidate's natural level for that archetype**
-2. **"Sell senior without lying" plan**: specific phrases adapted to the archetype, concrete achievements to highlight, how to position founder experience as an advantage
-3. **"If they downlevel me" plan**: accept if compensation is fair, negotiate 6-month review, clear promotion criteria
+1. **JD 检测到的级别** vs **候选人在该类型的自然级别**
+2. **"合理定级"计划**：具体的措辞建议、可以突出的关键成果、如何定位过往经验作为加分项
+3. **"如果被压级"计划**：薪资能否接受、可否协商6个月快速复盘晋升、明确的晋升标准
 
-## Block D — Comp and Demand
+## Block D — 薪资福利评估
 
-Use WebSearch for:
-- Current salaries for the role (Glassdoor, Levels.fyi, Blind)
-- Company's compensation reputation
-- Demand trend for the role
+使用 WebSearch 查询：
+- 该岗位在目标公司的薪资水平（脉脉、offershow、牛客、看准网）
+- 公司的薪资口碑（是否有年终奖缩水、拖欠等情况）
+- 该岗位的市场需求趋势
 
-Table with data and cited sources. If there is no data, state it instead of inventing.
+**评估维度（国内）：**
 
-## Block E — Customization Plan
+| 维度 | 5分 | 3分 | 1分 |
+|------|-----|-----|-----|
+| 月薪水平 | 高于市场75分位 | 市场中位 | 低于市场25分位 |
+| 年薪月数 | 16薪+ | 14薪 | 12薪且无年终 |
+| 五险一金 | 全额+公积金12% | 全额+公积金5-8% | 最低基数 |
+| 试用期 | 3个月全薪 | 6个月全薪 | 6个月打折 |
+| 期权/股票 | 上市可交易RSU | 有期权但未上市 | 无 |
+| 加班情况 | 双休无强制加班 | 偶尔加班 | 996/大小周 |
 
-| # | Section | Current status | Proposed change | Why |
-|---|---------|---------------|------------------|---------|
-| 1 | Summary | ... | ... | ... |
+表格含数据和引用来源。如无数据，如实说明而非编造。
+
+## Block E — 简历定制方案
+
+| # | 部分 | 当前状态 | 修改建议 | 原因 |
+|---|------|---------|----------|------|
+| 1 | 职业概述 | ... | ... | ... |
 | ... | ... | ... | ... | ... |
 
-Top 5 changes to CV + Top 5 changes to LinkedIn to maximize match.
+Top 5 简历修改 + Top 3 脉脉/LinkedIn 修改以最大化匹配。
 
-## Block F — Interview Plan
+## Block F — 面试准备
 
-6-10 STAR+R stories mapped to JD requirements (STAR + **Reflection**):
+6-10 个 STAR+R 故事映射到 JD 要求（STAR + **复盘反思**）：
 
-| # | JD Requirement | STAR+R Story | S | T | A | R | Reflection |
-|---|-----------------|-----------------|---|---|---|---|------------|
+| # | JD 要求 | STAR+R 故事 | 背景 | 任务 | 行动 | 结果 | 复盘 |
+|---|---------|-------------|------|------|------|------|------|
 
-The **Reflection** column captures what was learned or what would be done differently. This signals seniority — junior candidates describe what happened, senior candidates extract lessons.
+**复盘反思**列记录学到了什么或下次会怎么做不同。这体现高级思维 — 初级说做了什么，高级提炼方法论。
 
-**Story Bank:** If `interview-prep/story-bank.md` exists, check if any of these stories are already there. If not, append new ones. Over time this builds a reusable bank of 5-10 master stories that can be adapted to any interview question.
+**故事库：** 如果 `interview-prep/story-bank.md` 存在，检查是否已有这些故事。如果没有，追加新的。随着时间积累，建立一个可复用的 5-10 个核心故事库。
 
-**Selected and framed according to the archetype:**
-- FDE → emphasize delivery speed and client-facing
-- SA → emphasize architectural decisions
-- PM → emphasize discovery and trade-offs
-- LLMOps → emphasize metrics, evals, production hardening
-- Agentic → emphasize orchestration, error handling, HITL
-- Transformation → emphasize adoption, organizational change
+**按岗位类型选择和构建：**
+- 后端架构 → 强调系统设计、高并发方案、性能调优
+- AI/大模型 → 强调模型部署、RAG 架构、效果评估
+- 基础架构 → 强调平台建设、可观测性、成本优化
+- 技术管理 → 强调团队建设、技术决策、冲突处理
 
-Also include:
-- 1 recommended case study (which of their projects to present and how)
-- Red-flag questions and how to answer them (e.g., "why did you sell your company?", "do you have a team of reports?")
+**国内面试额外准备（根据公司和岗位包含以下内容）：**
+- **技术基础（八股文）**：根据 JD 技术栈列出需要复习的基础知识点（Go 并发模型、MySQL 索引优化、Redis 数据结构、操作系统、网络协议等）
+- **算法刷题准备**：根据公司类型建议刷题策略（字节/阿里偏难题，其他公司偏中等级别），标注该岗位在牛客网/LeetCode 上的常见题型
+- **项目深挖**：每个核心项目准备 3-5 分钟的深入介绍（架构图 + 技术决策 + 量化结果 + 踩过的坑）
+- **系统设计**：如果岗位要求系统设计面试，列出 2-3 道最可能考察的设计题
+- **HR 面准备**：离职原因话术、薪资预期沟通策略、入职时间谈判
+- **群面准备**（如适用）：角色定位策略、发言节奏技巧
 
-## Block G — Posting Legitimacy
+## Block G — 岗位真实性
 
-Analyze the job posting for signals that indicate whether this is a real, active opening. This helps the user prioritize their effort on opportunities most likely to result in a hiring process.
+分析岗位信号判断是否为真实在招岗位。
 
-**Ethical framing:** Present observations, not accusations. Every signal has legitimate explanations. The user decides how to weigh them.
+**伦理框架：** 呈现观察而非指控。每个信号都有合理解释。用户自行判断。
 
-### Signals to analyze (in order):
+### 分析信号（按顺序）：
 
-**1. Posting Freshness** (from Playwright snapshot, already captured in Step 0):
-- Date posted or "X days ago" -- extract from page
-- Apply button state (active / closed / missing / redirects to generic page)
-- If URL redirected to generic careers page, note it
+**1. 岗位时效性**（从 Playwright 快照提取）：
+- 发布日期或"X天前" — 从页面提取
+- 投递按钮状态（活跃/关闭/缺失/跳转通用页面）
+- 如果 URL 跳转到通用招聘页，标注
 
-**2. Description Quality** (from JD text):
-- Does it name specific technologies, frameworks, tools?
-- Does it mention team size, reporting structure, or org context?
-- Are requirements realistic? (years of experience vs technology age)
-- Is there a clear scope for the first 6-12 months?
-- Is salary/compensation mentioned?
-- What ratio of the JD is role-specific vs generic boilerplate?
-- Any internal contradictions? (entry-level title + staff requirements, etc.)
+**2. JD 质量**（来自 JD 文本）：
+- 是否列出具体技术栈、框架、工具？
+- 是否提到团队规模、汇报关系或组织背景？
+- 要求是否合理？（经验年限 vs 技术年龄）
+- 是否有明确的前6-12个月职责范围？
+- JD 中岗位特有内容 vs 通用套话的比例？
+- 是否有内部矛盾？（初级职称 + 资深要求等）
 
-**3. Company Hiring Signals** (2-3 WebSearch queries, combine with Block D research):
-- Search: `"{company}" layoffs {year}` -- note date, scale, departments
-- Search: `"{company}" hiring freeze {year}` -- note any announcements
-- If layoffs found: are they in the same department as this role?
+**3. 公司招聘信号**（2-3 次 WebSearch，可与 Block D 调研合并）：
+- 搜索：`"{公司}" 裁员` — 记录日期、规模、部门
+- 搜索：`"{公司}" 招聘冻结` — 记录公告
+- 如有裁员：是否与该岗位同部门？
 
-**4. Reposting Detection** (from scan-history.tsv):
-- Check if company + similar role title appeared before with a different URL
-- Note how many times and over what period
+**4. 重复发布检测**（来自 scan-history.tsv）：
+- 检查公司 + 相似岗位名称之前是否出现过（不同URL）
+- 记录出现次数和周期
 
-**5. Role Market Context** (qualitative, no additional queries):
-- Is this a common role that typically fills in 4-6 weeks?
-- Does the role make sense for this company's business?
-- Is the seniority level one that legitimately takes longer to fill?
+**5. 国内特有信号**：
+- 公司 HR 在 BOSS直聘/猎聘上近期是否有活跃（回复/查看简历）
+- 公司是否在多平台同时发布（正常）vs 同一岗位全年挂（可疑）
+- 是否有"急聘"标记（正面信号）
+- BOSS直聘上的"今日活跃"状态
 
-### Output format:
+### 输出格式：
 
-**Assessment:** One of three tiers:
-- **High Confidence** -- Multiple signals suggest a real, active opening
-- **Proceed with Caution** -- Mixed signals worth noting
-- **Suspicious** -- Multiple ghost job indicators, investigate before investing time
+**评估：** 三选一：
+- **高置信度** — 多个信号指向真实在招岗位
+- **谨慎对待** — 信号混杂，值得注意
+- **可疑** — 多个 ghost 指标，建议先核实
 
-**Signals table:** Each signal observed with its finding and weight (Positive / Neutral / Concerning).
+**信号表格：** 每个观察到的信号、发现和权重（正面 / 中性 / 关注）。
 
-**Context Notes:** Any caveats (niche role, government job, evergreen position, etc.) that explain potentially concerning signals.
+**背景说明：** 任何可能解释可疑信号的背景（特殊岗位、国企、长期储备岗位等）。
 
-### Edge case handling:
-- **Government/academic postings:** Longer timelines are standard. Adjust thresholds (60-90 days is normal).
-- **Evergreen/continuous hire postings:** If the JD explicitly says "ongoing" or "rolling," note it as context -- this is not a ghost job, it is a pipeline role.
-- **Niche/executive roles:** Staff+, VP, Director, or highly specialized roles legitimately stay open for months. Adjust age thresholds accordingly.
-- **Startup / pre-revenue:** Early-stage companies may have vague JDs because the role is genuinely undefined. Weight description vagueness less heavily.
-- **No date available:** If posting age cannot be determined and no other signals are concerning, default to "Proceed with Caution" with a note that limited data was available. NEVER default to "Suspicious" without evidence.
-- **Recruiter-sourced (no public posting):** Freshness signals unavailable. Note that active recruiter contact is itself a positive legitimacy signal.
+### 边界情况处理：
+- **国企/事业单位：** 时间线较长是正常的。调整阈值（60-90天正常）。
+- **长期储备岗位：** 如果 JD 明确说明"长期招聘"或"储备"，标注说明 — 这不一定是 ghost 岗位
+- **高管/专家岗位：** 总监/VPE/专家级别合法需要更长时间。调整时效阈值。
+- **初创公司：** 早期公司 JD 可能模糊因为岗位确实未完全定义。降低 JD 模糊度权重。
+- **无发布日期：** 如果无法确定时效且无其他关注信号，默认"谨慎对待"并标注数据有限。绝不默认"可疑"。
+- **内推渠道（无公开岗位）：** 时效信号不可用。主动内推联系本身是正面的真实性信号。
+- **BOSS直聘/猎聘上的"急聘"标签：** 正面信号，通常意味着真实且紧急的需求。
 
 ---
 
-## Post-evaluation
+## 评估后
 
-**ALWAYS** after generating blocks A-G:
+**生成 A-G 模块后始终执行：**
 
-### 1. Save report .md
+### 1. 保存评估报告 .md
 
-Save full evaluation in `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`.
+将完整评估保存到 `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`。
 
-- `{###}` = next sequential number (3 digits, zero-padded)
-- `{company-slug}` = company name in lowercase, without spaces (use hyphens)
-- `{YYYY-MM-DD}` = current date
+- `{###}` = 下一个序号（3位，补零）
+- `{company-slug}` = 公司名小写无空格（用连字符）
+- `{YYYY-MM-DD}` = 当前日期
 
-**Report format:**
+**报告格式：**
 
 ```markdown
-# Evaluation: {Company} — {Role}
+# 评估：{公司} — {岗位}
 
-**Date:** {YYYY-MM-DD}
-**URL:**
-**Archetype:** {detected}
-**Score:** {X/5}
-**Legitimacy:** {High Confidence | Proceed with Caution | Suspicious}
-**PDF:** {path or pending}
-
----
-
-## A) Role Summary
-(full content of block A)
-
-## B) Match with CV
-(full content of block B)
-
-## C) Level and Strategy
-(full content of block C)
-
-## D) Comp and Demand
-(full content of block D)
-
-## E) Customization Plan
-(full content of block E)
-
-## F) Interview Plan
-(full content of block F)
-
-## G) Posting Legitimacy
-(full content of block G)
-
-## H) Draft Application Answers
-(only if score >= 4.5 — draft answers for the application form)
+**日期：** {YYYY-MM-DD}
+**链接：**
+**岗位类型：** {检测结果}
+**综合评分：** {X/5}
+**真实性：** {高置信度 | 谨慎对待 | 可疑}
+**PDF：** {路径或待生成}
 
 ---
 
-## Keywords extracted
-(list of 15-20 keywords from the JD for ATS optimization)
+## A) 岗位概要
+(Block A 完整内容)
+
+## B) 简历匹配度
+(Block B 完整内容)
+
+## C) 级别与策略
+(Block C 完整内容)
+
+## D) 薪资福利评估
+(Block D 完整内容)
+
+## E) 简历定制方案
+(Block E 完整内容)
+
+## F) 面试准备
+(Block F 完整内容)
+
+## G) 岗位真实性
+(Block G 完整内容)
+
+## H) 投递表单回答草稿
+(仅当评分 >= 4.5 — 为投递表单生成回答草稿)
+
+---
+
+## JD 关键词提取
+(从 JD 中提取的 15-20 个关键词，用于 ATS 优化)
 ```
 
-### 2. Record in tracker
+### 2. 记录到追踪表
 
-**ALWAYS** record in `data/applications.md`:
-- Next sequential number
-- Current date
-- Company
-- Role
-- Score: match average (1-5)
-- Status: `Evaluated`
-- PDF: ❌ (or ✅ if auto-pipeline generated PDF)
-- Report: link relative to the report .md (e.g., `[001](reports/001-company-2026-01-01.md)`)
+**始终**记录到 `data/applications.md`：
+- 下一个序号
+- 当前日期
+- 公司
+- 岗位
+- 评分：综合平均分（1-5）
+- 状态：`已评估`
+- PDF：❌（如果 auto-pipeline 生成了 PDF 则为 ✅）
+- 报告：链接到报告 .md 的相对路径（如 `[001](reports/001-company-2026-01-01.md)`）
 
-**Tracker format:**
+**追踪表格式：**
 
 ```markdown
-| # | Date | Company | Role | Score | Status | PDF | Report |
+| # | 日期 | 公司 | 岗位 | 评分 | 状态 | PDF | 报告 |
 ```

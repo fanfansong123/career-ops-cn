@@ -1,107 +1,107 @@
-# Mode: apply — Live Application Assistant
+# Mode: apply -- 实时投递助手
 
-Interactive mode for when the candidate is filling out an application form in Chrome. It reads what is on the screen, loads the previous context of the job, and generates personalized responses for each form question.
+交互模式，当候选人正在浏览器中填写投递表单时使用。读取屏幕内容，加载该岗位的已有上下文，为每个表单问题生成个性化回答。
 
-## Requirements
+## 要求
 
-- **Best with Playwright in visible mode**: In visible mode, the candidate sees the browser and Claude can interact with the page.
-- **Without Playwright**: the candidate shares a screenshot or pastes the questions manually.
+- **最佳配合 Playwright 可见模式**：候选人看到浏览器，Claude 可以与页面交互。
+- **无 Playwright**：候选人分享截图或手动粘贴问题。
 
-## Workflow
+## 工作流
 
 ```text
-1. DETECT      → Read active Chrome tab (screenshot/URL/title)
-2. IDENTIFY    → Extract company + role from the page
-3. SEARCH      → Match against existing reports in reports/
-4. LOAD        → Read full report + Section G (if it exists)
-5. COMPARE     → Does the role on screen match the one evaluated? If it changed → notify
-6. ANALYZE     → Identify ALL visible form questions
-7. GENERATE    → For each question, generate a personalized response
-8. PRESENT     → Show formatted responses for copy-paste
+1. 检测      → 读取活跃浏览器标签页（截图/URL/标题）
+2. 识别      → 从页面提取公司名 + 岗位名
+3. 搜索      → 与 reports/ 中已有报告匹配
+4. 加载      → 读取完整报告 + 之前生成的投递回答草稿
+5. 比对      → 页面上的岗位是否与评估的一致？如果变了 → 通知候选人
+6. 分析      → 识别所有可见的表单问题
+7. 生成      → 为每个问题生成个性化回答
+8. 呈现      → 展示格式化回答供复制粘贴
 ```
 
-## Step 1 — Detect the job
+## Step 1 — 检测岗位
 
-**With Playwright:** Take a snapshot of the active page. Read title, URL, and visible content.
+**使用 Playwright:** 截取活跃页面快照。读取标题、URL 和可见内容。
 
-**Without Playwright:** Ask the candidate to:
-- Share a screenshot of the form (Read tool can read images)
-- Or paste the form questions as text
-- Or say company + role so we can search for it
+**无 Playwright:** 要求候选人：
+- 分享表单截图（Read 工具可以读取图片）
+- 或粘贴表单问题文本
+- 或提供公司名 + 岗位名以便搜索
 
-## Step 2 — Identify and search for context
+## Step 2 — 识别并搜索上下文
 
-1. Extract company name and role title from the page
-2. Search in `reports/` by company name (case-insensitive grep)
-3. If there is a match → load the full report
-4. If there is a Section G → load previous draft answers as a base
-5. If there is NO match → notify and offer to run a quick auto-pipeline
+1. 从页面提取公司名和岗位名
+2. 在 `reports/` 中按公司名搜索（大小写不敏感 grep）
+3. 如果匹配 → 加载完整报告
+4. 如果报告中有投递回答草稿 → 作为基础进行修改
+5. 如果没有匹配 → 通知并提议运行快速 auto-pipeline
 
-## Step 3 — Detect changes in the role
+## Step 3 — 检测岗位变化
 
-If the role on screen differs from the one evaluated:
-- **Notify the candidate**: "The role has changed from [X] to [Y]. Do you want me to re-evaluate or adapt the responses to the new title?"
-- **If adapt**: Adjust responses to the new role without re-evaluating
-- **If re-evaluate**: Execute full A-F evaluation, update report, regenerate Section G
-- **Update tracker**: Change role title in applications.md if applicable
+如果页面上的岗位与评估的不同：
+- **通知候选人**: "岗位从 [X] 变为 [Y]。需要重新评估还是基于现有内容调整回答？"
+- **如果调整**: 按新岗位调整回答而不重新评估
+- **如果重新评估**: 执行完整 A-F 评估，更新报告
+- **更新追踪表**: 如适用，更新 applications.md 中的岗位名
 
-## Step 4 — Analyze form questions
+## Step 4 — 分析表单问题
 
-Identify ALL visible questions:
-- Free text fields (cover letter, why this role, etc.)
-- Dropdowns (how did you hear, work authorization, etc.)
-- Yes/No (relocation, visa, etc.)
-- Salary fields (range, expectation)
-- Upload fields (resume, cover letter PDF)
+识别所有可见问题：
+- 自由文本框（求职信、为什么选这个岗位等）
+- 下拉选择（消息来源、工作许可等）
+- 是/否（是否接受异地、是否需要签证等）
+- 薪资字段（范围、期望）
+- 上传字段（简历、求职信 PDF）
 
-Classify each question:
-- **Already answered in Section G** → adapt the existing response
-- **New question** → generate response from the report + cv.md
+分类每个问题：
+- **已有回答草稿** → 修改现有回答
+- **新问题** → 从报告 + cv.md 生成回答
 
-## Step 5 — Generate responses
+## Step 5 — 生成回答
 
-For each question, generate the response following:
+对每个问题按以下规则生成：
 
-1. **Report context**: Use proof points from block B, STAR stories from block F
-2. **Previous Section G**: If a draft response exists, use it as a base and refine
-3. **"I'm choosing you" tone**: Same auto-pipeline framework
-4. **Specificity**: Reference something specific from the JD visible on screen
-5. **career-ops proof point**: Include in "Additional info" if there is a field for it
+1. **报告上下文**: 使用 Block B 的成果证明、Block F 的故事
+2. **已有草稿**: 如果存在之前的回答草稿，作为基础进行优化
+3. **"我在选择你们"语气**: 和 auto-pipeline 相同框架
+4. **具体性**: 引用屏幕上 JD 的具体内容
+5. **成果证明**: 在"补充信息"字段中包含
 
-**Output format:**
+**输出格式:**
 
 ```text
-## Responses for [Company] — [Role]
+## 投递回答 — {公司} — {岗位}
 
-Based on: Report #NNN | Score: X.X/5 | Archetype: [type]
+基于: 报告 #NNN | 评分: X.X/5 | 岗位类型: [类型]
 
 ---
 
-### 1. [Exact form question]
-> [Response ready for copy-paste]
+### 1. [具体表单问题]
+> [可直接复制粘贴的回答]
 
-### 2. [Next question]
-> [Response]
+### 2. [下一个问题]
+> [回答]
 
 ...
 
 ---
 
-Notes:
-- [Any observations about the role, changes, etc.]
-- [Personalization suggestions the candidate should review]
+备注:
+- [关于岗位的观察、变化等]
+- [候选人需要审核的个性化建议]
 ```
 
-## Step 6 — Post-apply (optional)
+## Step 6 — 投递后（可选）
 
-If the candidate confirms that they submitted the application:
-1. Update status in `applications.md` from "Evaluated" to "Applied"
-2. Update Section G of the report with the final responses
-3. Suggest next step: `/career-ops contacto` for LinkedIn outreach
+如果候选人确认已提交申请：
+1. 在 applications.md 中将状态从"已评估"更新为"已投递"
+2. 将最终回答追加到报告
+3. 建议下一步: `/career-ops contacto` 进行社交外联
 
-## Scroll handling
+## 翻页处理
 
-If the form has more questions than the visible ones:
-- Ask the candidate to scroll and share another screenshot
-- Or paste the remaining questions
-- Process in iterations until the entire form is covered
+如果表单有多页或问题超出可见范围：
+- 请候选人翻页并分享新截图
+- 或粘贴剩余问题
+- 多轮迭代直到覆盖整个表单

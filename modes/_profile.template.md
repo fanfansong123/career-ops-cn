@@ -1,102 +1,105 @@
-# User Profile Context -- career-ops
+# 用户画像配置 -- career-ops-cn
 
 <!-- ============================================================
      THIS FILE IS YOURS. It will NEVER be auto-updated.
      
-     Customize everything here: your archetypes, narrative,
-     proof points, negotiation scripts, location policy.
+     在这里自定义所有内容：你的岗位画像、个人叙事、
+     成果证明、薪资谈判策略、地点偏好。
      
-     The system reads _shared.md (updatable) first, then this
-     file (your overrides). Your customizations always win.
+     系统先读取 _shared.md（可更新），再读取此文件
+     （你的覆盖）。你的自定义始终胜出。
      ============================================================ -->
 
-## Your Target Roles
+## 你的目标岗位
 
-<!-- Replace these with YOUR target roles. Examples:
-     - Senior Backend Engineer / Staff Platform Engineer
-     - AI Product Manager / Technical PM
-     - Data Engineer / ML Engineer
-     - DevOps / SRE / Platform
-     Whatever you're optimizing for. -->
+<!-- 替换为你的目标岗位。示例：
+     - 高级后端开发工程师 / 技术专家
+     - AI 产品经理 / 技术产品经理
+     - 数据工程师 / 机器学习工程师
+     - DevOps / SRE / 基础架构
+     根据你的实际情况调整。 -->
 
-| Archetype | Thematic axes | What they buy |
-|-----------|---------------|---------------|
-| **AI Platform / LLMOps Engineer** | Evaluation, observability, reliability, pipelines | Someone who puts AI in production with metrics |
-| **Agentic Workflows / Automation** | HITL, tooling, orchestration, multi-agent | Someone who builds reliable agent systems |
-| **Technical AI Product Manager** | GenAI/Agents, PRDs, discovery, delivery | Someone who translates business to AI product |
-| **AI Solutions Architect** | Hyperautomation, enterprise, integrations | Someone who designs end-to-end AI architectures |
-| **AI Forward Deployed Engineer** | Client-facing, fast delivery, prototyping | Someone who delivers AI solutions to clients fast |
-| **AI Transformation Lead** | Change management, adoption, org enablement | Someone who leads AI transformation in an org |
+| 岗位类型 | 核心维度 | 招聘方买点 |
+|----------|---------|------|
+| **后端架构** | 高并发、分布式、微服务、系统设计 | 能设计大规模系统并落地的人 |
+| **AI/大模型应用开发** | RAG、Agent、模型部署、Prompt Engineering | 能把 AI 能力落地到产品的人 |
+| **基础架构** | K8s、CI/CD、可观测性、中间件 | 能搭建稳定高效技术底座的人 |
+| **技术管理** | 团队建设、技术规划、跨部门协作、交付 | 能带团队拿结果的人 |
+| **客户端/前端** | 小程序、React/Vue、跨端、性能优化 | 能打造一流用户体验的人 |
+| **数据工程** | 数仓、ETL、Flink/Spark、数据治理 | 能构建可靠数据管道的人 |
 
-## Your Adaptive Framing
+## 你的自适应叙事
 
-<!-- Map YOUR projects to each archetype. Example:
-     | Platform / LLMOps | My monitoring dashboard project | article-digest.md |
-     | Agentic | My chatbot with HITL escalation | cv.md section 3 | -->
+<!-- 将你的项目映射到每种岗位类型。示例：
+     | 后端架构 | 我的微服务拆分项目 | article-digest.md |
+     | AI/大模型 | 我的 RAG 应用项目 | cv.md 第3节 | -->
 
-| If the role is... | Emphasize about you... | Proof point sources |
-|-------------------|------------------------|---------------------|
-| Platform / LLMOps | Production systems builder, observability, evals | article-digest.md + cv.md |
-| Agentic / Automation | Multi-agent orchestration, HITL, reliability | article-digest.md + cv.md |
-| Technical AI PM | Product discovery, PRDs, metrics | cv.md + article-digest.md |
-| Solutions Architect | System design, integrations, enterprise-ready | article-digest.md + cv.md |
-| Forward Deployed Engineer | Fast delivery, client-facing, prototype to prod | cv.md + article-digest.md |
-| AI Transformation Lead | Change management, team enablement, adoption | cv.md + article-digest.md |
+| 如果岗位是... | 强调你的... | 成果来源 |
+|-------------|-----------|---------|
+| 后端架构 | 系统设计、性能优化、高并发经验 | article-digest.md + cv.md |
+| AI/大模型 | RAG 架构、Agent 开发、模型评测 | article-digest.md + cv.md |
+| 基础架构 | 平台搭建、自动化、稳定性治理 | article-digest.md + cv.md |
+| 技术管理 | 团队建设、技术决策、跨团队协作 | cv.md + article-digest.md |
+| 客户端/前端 | 性能优化、用户体验、跨端方案 | cv.md + article-digest.md |
+| 数据工程 | 数据管道、数仓设计、数据质量 | article-digest.md + cv.md |
 
-## Your Exit Narrative
+## 你的差异化故事
 
-<!-- Replace with YOUR story. This frames everything. -->
+<!-- 替换为你的故事。这决定了所有内容的叙事框架。 -->
 
-Use the candidate's exit story from `config/profile.yml` to frame ALL content:
-- **In PDF Summaries:** Bridge from past to future
-- **In STAR stories:** Reference proof points from article-digest.md
-- **In Draft Answers:** The transition narrative appears in the first response
+使用 `config/profile.yml` 中候选人的差异化故事来构建所有内容：
+- **PDF 职业概述：** 从过去衔接到未来
+- **STAR 故事：** 引用 article-digest.md 中的成果证明
+- **投递回答草稿：** 转型叙事出现在第一个回答中
 
-## Your Cross-cutting Advantage
+## 你的核心竞争力
 
-<!-- What's your "signature move"? What do you do that others can't? -->
+<!-- 你的"招牌技能"是什么？什么你能做别人做不了？ -->
 
-Frame profile as **"Technical builder with real-world proof"** that adapts framing to the role.
+将画像定位为 **"用技术解决业务问题的实干者"**，根据岗位调整叙事框架。
 
-## Your Portfolio / Demo
+## 你的作品展示
 
-<!-- If you have a live demo, dashboard, or public project:
+<!-- 如果你有在线演示、仪表盘或公开项目：
      url: https://yoursite.dev/demo
      password: demo-2026
-     when_to_share: "LLMOps, AI Platform roles" -->
+     何时分享: "后端架构、基础架构岗位" -->
 
-If you have a live demo/dashboard (check profile.yml), offer access in applications for relevant roles.
+如果你有在线演示/仪表盘（检查 profile.yml），在相关岗位的投递中主动提供访问方式。
 
-## Your Comp Targets
+## 你的薪资目标
 
-<!-- Research comp ranges for YOUR target roles -->
+<!-- 研究目标岗位的薪资范围 -->
 
-**General guidance:**
-- Use WebSearch for current market data (Glassdoor, Levels.fyi, Blind)
-- Frame by role title, not by skills
-- Contractor rates are typically 30-50% higher than employee base
+**通用指导：**
+- 使用 WebSearch 查询当前市场数据（脉脉、offershow、牛客、BOSS直聘、看准网）
+- 按岗位 title 而非技能来定位
+- 注意区分税前/税后、base/总包
 
-## Your Negotiation Scripts
+## 你的薪资谈判话术
 
-<!-- Adapt to YOUR situation, currency, location -->
+<!-- 根据你的情况、期望调整 -->
 
-**Salary expectations:**
-> "Based on market data for this role, I'm targeting [RANGE from profile.yml]. I'm flexible on structure -- what matters is the total package and the opportunity."
+**薪资期望沟通：**
+> "根据市场数据，这个岗位的薪资范围大约是 XXk-XXk。我对薪资结构比较灵活 — 更重要的是总包和成长空间。"
 
-**Geographic discount pushback:**
-> "The roles I'm competitive for are output-based, not location-based. My track record doesn't change based on postal code."
+**当被问到现在薪资：**
+> "我目前在看 XXk 以上的机会。不过我更关注岗位本身的发展空间，薪资可以谈。"
 
-**When offered below target:**
-> "I'm comparing with opportunities in the [higher range]. I'm drawn to [company] because of [reason]. Can we explore [target]?"
+**对方报价低于预期：**
+> "我目前在对比几个机会，范围在 XXk-XXk。我对贵司很感兴趣，因为 [原因]，能否帮忙争取到 XXk？"
 
-## Your Location Policy
+**年终奖/期权谈判：**
+> "我理解薪资结构包括 base + 年终 + 期权。能否详细说明一下年终的计算方式、发放时间和去年的发放情况？"
 
-<!-- Adapt to YOUR situation -->
+## 你的地点偏好
 
-**In forms:**
-- Follow your actual availability from profile.yml
-- Specify timezone overlap in free-text fields
+<!-- 根据你的情况调整 -->
 
-**In evaluations (scoring):**
-- Remote dimension for hybrid outside your country: score **3.0** (not 1.0)
-- Only score 1.0 if JD says "must be on-site 4-5 days/week, no exceptions"
+**在表单中：**
+- 按照 profile.yml 中的实际可用性填写
+- 在自由文本框中注明通勤时间或远程意愿
+
+**在评估中（评分）：**
+- 混合办公的远程维度：如果不是你所在城市，评分 **3.0**（不是 1.0）
+- 只有当 JD 明确要求"必须现场 5 天/周，无例外"时才给 1.0

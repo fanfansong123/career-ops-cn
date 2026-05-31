@@ -1,22 +1,22 @@
-# Mode: jobs — Multi-Job Comparison
+# Mode: ofertas -- 多岗位对比排名
 
-Scoring matrix with 10 weighted dimensions:
+9 个加权维度的评分矩阵：
 
-| Dimension | Weight | Criteria 1-5 |
-|-----------|------|----------------|
-| North Star alignment | 25% | 5=exact target role, 1=unrelated |
-| CV match | 15% | 5=90%+ match, 1=<40% match |
-| Level (senior+) | 15% | 5=staff+, 4=senior, 3=mid-senior, 2=mid, 1=junior |
-| Estimated compensation | 10% | 5=top quartile, 1=below market |
-| Growth trajectory | 10% | 5=clear path to next level, 1=dead end |
-| Remote quality | 5% | 5=full remote async, 1=onsite only |
-| Company reputation | 5% | 5=top employer, 1=red flags |
-| Tech stack modernity | 5% | 5=cutting-edge AI/ML, 1=legacy |
-| Time-to-offer speed | 5% | 5=fast process, 1=6+ months |
-| Cultural signals | 5% | 5=builder culture, 1=bureaucratic |
+| 维度 | 权重 | 评分标准 1-5 |
+|------|------|-------------|
+| 北极星对齐 | 25% | 5=精准匹配目标岗位，1=不相关 |
+| 简历匹配 | 15% | 5=90%+匹配，1=<40%匹配 |
+| 级别（高级+） | 15% | 5=资深/专家，4=高级，3=初中级，2=中级，1=初级 |
+| 薪资福利 | 10% | 5=市场前25%，1=低于市场 |
+| 成长空间 | 10% | 5=清晰的晋升路径，1=死胡同 |
+| 远程/灵活办公 | 5% | 5=完全远程异步，1=仅现场 |
+| 公司口碑 | 5% | 5=顶级雇主，1=口碑差 |
+| 技术栈先进性 | 5% | 5=前沿技术，1=遗留系统 |
+| 面试效率 | 5% | 5=快速流程，1=6个月以上 |
+| 福利保障 | 5% | 5=全额五险一金+最高公积金+全薪试用期，1=最低基数 |
 
-For each job: score per dimension and total weighted score.
-Final ranking + recommendation with time-to-offer considerations.
-All reports must include **URL:** and **Legitimacy:** fields in the output header.
+对每个岗位：每个维度打分 + 加权总分。
+最终排名 + 含时间因素的建议。
+所有报告头部包含 **链接:** 和 **真实性:** 字段。
 
-Ask the user for job postings if they are not in context. These can be text, URLs, or references to jobs already evaluated in the tracker.
+如果上下文中没有岗位信息，向用户索要。可以是文本、URL 或追踪表中已评估的岗位引用。

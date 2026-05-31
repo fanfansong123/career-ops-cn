@@ -1,179 +1,173 @@
-# Mode: pdf — ATS-Optimized PDF Generation
+# Mode: pdf — 中文 ATS 优化 PDF 生成
 
-## Full pipeline
+## 完整流程
 
-1. Read `cv.md` as the source of truth
-2. Ask the user for the JD if it is not in context (text or URL)
-3. Extract 15-20 keywords from the JD
-4. Detect JD language → CV language (EN default)
-5. Detect company location → paper format:
-   - US/Canada → `letter`
-   - Rest of the world → `a4`
-6. Detect role archetype → adapt framing
-7. Rewrite Professional Summary by injecting JD keywords + exit narrative bridge ("Built and sold a business. Now applying systems thinking to [JD domain].")
-8. Select top 3-4 most relevant projects for the job
-9. Reorder experience bullets by JD relevance
-10. Build competency grid from JD requirements (6-8 keyword phrases)
-11. Inject keywords naturally into existing achievements (NEVER invent)
-12. Generate full HTML from template + personalized content
-13. Read `name` from `config/profile.yml` → normalize to kebab-case lowercase (e.g. "John Doe" → "john-doe") → `{candidate}`
-14. Write HTML to `/tmp/cv-{candidate}-{company}.html`
-15. Execute: `node generate-pdf.mjs /tmp/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format={letter|a4}`
-16. Report: PDF path, number of pages, keyword coverage %
+1. 读取 `cv.md` 作为唯一的经历来源
+2. 如果上下文中没有 JD，向用户索要（文本或 URL）
+3. 从 JD 中提取 15-20 个关键词
+4. 检测 JD 语言 → 简历语言（中文 JD → 中文简历）
+5. 国内岗位默认使用 A4 纸
+6. 检测岗位类型 → 调整叙事框架
+7. 重写职业概述，注入 JD 关键词 + 差异化故事（"从0到1搭建过日活百万的系统，现在把系统思维应用到 [JD领域]"）
+8. 选择与岗位最相关的 3-4 个项目
+9. 按 JD 相关度重排工作经历要点
+10. 根据 JD 要求构建核心能力网格（6-8个关键词短语）
+11. 将关键词自然地融入已有经历（绝不编造）
+12. 从模板 + 个性化内容生成完整 HTML
+13. 从 `config/profile.yml` 读取姓名 → 转为拼音连字符格式（如 "张三" → "san-zhang"）→ `{candidate}`
+14. 将 HTML 写入 `/tmp/cv-{candidate}-{company}.html`
+15. 执行：`node generate-pdf.mjs /tmp/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format=a4`
+16. 报告：PDF 路径、页数、关键词覆盖率 %
 
-## ATS Rules (clean parsing)
+## 工作经历生成规则
 
-- Single-column layout (no sidebars, no parallel columns)
-- Standard headers: "Professional Summary", "Work Experience", "Education", "Skills", "Certifications", "Projects"
-- No text in images/SVGs
-- No critical info in PDF headers/footers (ATS ignores them)
-- UTF-8, selectable text (not rasterized)
-- No nested tables
-- Distributed JD keywords: Summary (top 5), first bullet of each role, Skills section
+- **每家公司独立列出，绝不合并。** 即使两家公司时间相邻、岗位相似，也必须分开写。示例：巍势数码（2014.01-2015.05）和进禹科技（2013.08-2014.01）是两个独立条目。
+- 每条包含：公司名、岗位、时间段、一句话概括（1-2行）。具体技术细节留给项目经历部分。
+- 早期简短经历（< 1 年）也要独立列出，不可省略或合并。
 
-## PDF Design
+## 项目经历生成规则
 
-- **Fonts**: Space Grotesk (headings, 600-700) + DM Sans (body, 400-500)
-- **Fonts self-hosted**: `fonts/`
-- **Header**: name in Space Grotesk 24px bold + gradient line `linear-gradient(to right, hsl(187,74%,32%), hsl(270,70%,45%))` 2px + contact row
-- **Section headers**: Space Grotesk 13px, uppercase, letter-spacing 0.05em, color cyan primary
-- **Body**: DM Sans 11px, line-height 1.5
-- **Company names**: accent purple color `hsl(270,70%,45%)`
-- **Margins**: 0.6in
-- **Background**: pure white
+- **所有公司的项目都要包含，不可省略。** 当前主要项目来自 UCloud（占简历主体），但淘米游戏等项目也必须出现，篇幅可以精简但不能完全删除。
+- 与 JD 高度相关的项目（当前公司或技能匹配）：详写，包含背景/方案/实现/产出。
+- 与 JD 低相关的项目（旧公司或不同技术栈）：简写，1-3 条要点即可，放在"其他项目经历"小节。
+- 排序规则：最匹配 JD 的项目排最前，早期项目排后面。
 
-## Section order (optimized "6-second recruiter scan")
+## 中文简历 ATS 规范（确保机器可解析）
 
-1. Header (large name, gradient, contact, portfolio link)
-2. Professional Summary (3-4 lines, keyword-dense)
-3. Core Competencies (6-8 keyword phrases in flex-grid)
-4. Work Experience (reverse chronological)
-5. Projects (top 3-4 most relevant)
-6. Education & Certifications
-7. Skills (languages + technical)
+- 单栏布局（无侧边栏，无并行列）
+- 标准标题："职业概述"、"工作经历"、"教育背景"、"技能"、"证书"、"项目经历"
+- 图片/SVG 中不要放文字
+- PDF 页眉/页脚不放关键信息（ATS 会忽略）
+- UTF-8 编码，文字可选（非图片渲染）
+- 无嵌套表格
+- JD 关键词分布：职业概述（前5个）、每个岗位第一条要点、技能部分
 
-## Keyword injection strategy (ethical, truth-based)
+## PDF 设计
 
-Examples of legitimate reformulation:
-- JD says "RAG pipelines" and CV says "LLM workflows with retrieval" → change to "RAG pipeline design and LLM orchestration workflows"
-- JD says "MLOps" and CV says "observability, evals, error handling" → change to "MLOps and observability: evals, error handling, cost monitoring"
-- JD says "stakeholder management" and CV says "collaborated with team" → change to "stakeholder management across engineering, operations, and business"
+- **字体**：阿里巴巴普惠体 2.0（Regular 正文 + Bold 标题），后备字体 苹方/微软雅黑
+- **字体已托管**：`fonts/alibaba-puhuiti-regular.woff2`（4.0MB）+ `fonts/alibaba-puhuiti-bold.woff2`（4.2MB）
+- **头部**：姓名 24px Bold + 渐变线 `linear-gradient(to right, hsl(187,74%,32%), hsl(270,70%,45%))` 2px + 联系方式行
+- **段落标题**：13px Bold，颜色 cyan 主色，底部边框
+- **正文**：10.5px，行高 1.6
+- **公司名称**：accent purple 颜色 `hsl(270,70%,45%)`
+- **页边距**：上下左右各 0.6in
+- **背景**：纯白
 
-**NEVER add skills that the candidate does not have. Only reword real experience using the exact JD vocabulary.**
+## 段落顺序（优化"6秒HR扫读"）
 
-## Template HTML
+1. 头部（姓名大字、渐变线、联系方式、GitHub/博客链接）
+2. 职业概述（2-3行，关键词密集）
+3. 核心能力（6-8个关键词标签，flex-grid 布局）
+4. 工作经历（倒序）
+5. 项目经历（最相关的 3-4 个）
+6. 教育背景 & 证书
+7. 技能（语言 + 技术）
 
-Use the template in `cv-template.html`. Replace the `{{...}}` placeholders with personalized content:
+## 关键词注入策略（伦理、基于事实）
 
-| Placeholder | Content |
-|-------------|-----------|
-| `{{LANG}}` | `en` or `es` |
-| `{{PAGE_WIDTH}}` | `8.5in` (letter) or `210mm` (A4) |
-| `{{NAME}}` | (from profile.yml) |
-| `{{PHONE}}` | (from profile.yml — include with its separator only when `profile.yml` has a non-empty `phone` value; omit both `<span>` and `<span class="separator">` otherwise) |
-| `{{EMAIL}}` | (from profile.yml) |
-| `{{LINKEDIN_URL}}` | [from profile.yml] |
-| `{{LINKEDIN_DISPLAY}}` | [from profile.yml] |
-| `{{PORTFOLIO_URL}}` | [from profile.yml] (or /es depending on language) |
-| `{{PORTFOLIO_DISPLAY}}` | [from profile.yml] (or /es depending on language) |
-| `{{LOCATION}}` | [from profile.yml] |
-| `{{SECTION_SUMMARY}}` | Professional Summary |
-| `{{SUMMARY_TEXT}}` | Personalized summary with keywords |
-| `{{SECTION_COMPETENCIES}}` | Core Competencies |
-| `{{COMPETENCIES}}` | `<span class="competency-tag">keyword</span>` × 6-8 |
-| `{{SECTION_EXPERIENCE}}` | Work Experience |
-| `{{EXPERIENCE}}` | HTML for each job with reordered bullets |
-| `{{SECTION_PROJECTS}}` | Projects |
-| `{{PROJECTS}}` | HTML for top 3-4 projects |
-| `{{SECTION_EDUCATION}}` | Education |
-| `{{EDUCATION}}` | Education HTML |
-| `{{SECTION_CERTIFICATIONS}}` | Certifications |
-| `{{CERTIFICATIONS}}` | Certifications HTML |
-| `{{SECTION_SKILLS}}` | Skills |
-| `{{SKILLS}}` | Skills HTML |
+合规改写示例：
+- JD 说"高并发系统设计"而简历写"系统性能优化" → 改为"高并发系统设计与性能优化：将核心接口延迟从 800ms 降至 120ms"
+- JD 说"微服务治理"而简历写"微服务架构改造" → 改为"微服务治理与架构改造：拆分单体应用为 12 个独立服务"
+- JD 说"技术方案设计"而简历写"技术文档编写" → 改为"技术方案设计与落地：主导核心业务系统从0到1的技术方案"
 
-## Canva CV Generation (optional)
+**绝不添加候选人没有的技能。只用 JD 的词汇重新表述真实经历。**
 
-If `config/profile.yml` has `cv.canva_resume_design_id` set, offer the user a choice before generating:
-- **"HTML/PDF (fast, ATS-optimized)"** — existing flow above
-- **"Canva CV (visual, design-preserving)"** — new flow below
+**中文简历特殊注意事项：**
+- 中文与英文单词/数字之间加空格："搭建 12 个 Go 微服务"
+- 量化指标用阿拉伯数字："800ms"、"10万+用户"、"30%"
+- 技术栈名称保持原文不翻译："PostgreSQL"、"Redis"、"Kubernetes"
+- 如果投外企，考虑生成中英文双语版本
 
-If the user has no `cv.canva_resume_design_id`, skip this prompt and use the HTML/PDF flow.
+## 模板 HTML
 
-### Canva workflow
+使用 `templates/cv-template.html` 中的模板。将 `{{...}}` 占位符替换为个性化内容：
 
-#### Step 1 — Duplicate the base design
+| 占位符 | 内容 |
+|--------|------|
+| `{{LANG}}` | `zh-CN` |
+| `{{PAGE_WIDTH}}` | `210mm`（A4） |
+| `{{NAME}}` | （来自 profile.yml） |
+| `{{PHONE}}` | （来自 profile.yml — 仅当有值时包含；为空时省略） |
+| `{{EMAIL}}` | （来自 profile.yml） |
+| `{{WECHAT_ROW}}` | 微信号 ` <span class="separator">|</span> <span>微信: xxx</span>`（仅当有值时包含） |
+| `{{GITHUB_URL}}` | （来自 profile.yml） |
+| `{{GITHUB_DISPLAY}}` | （来自 profile.yml） |
+| `{{BLOG_URL}}` | （来自 profile.yml） |
+| `{{BLOG_DISPLAY}}` | （来自 profile.yml） |
+| `{{LOCATION}}` | （来自 profile.yml） |
+| `{{SECTION_SUMMARY}}` | 职业概述 |
+| `{{SUMMARY_TEXT}}` | 含关键词的个性化概述 |
+| `{{SECTION_COMPETENCIES}}` | 核心能力 |
+| `{{COMPETENCIES}}` | `<span class="competency-tag">关键词</span>` × 6-8 |
+| `{{SECTION_EXPERIENCE}}` | 工作经历 |
+| `{{EXPERIENCE}}` | 每个岗位的 HTML，要点已按 JD 相关度重排 |
+| `{{SECTION_PROJECTS}}` | 项目经历 |
+| `{{PROJECTS}}` | Top 3-4 项目的 HTML |
+| `{{SECTION_EDUCATION}}` | 教育背景 |
+| `{{EDUCATION}}` | 教育背景 HTML |
+| `{{SECTION_CERTIFICATIONS}}` | 证书/资格 |
+| `{{CERTIFICATIONS}}` | 证书 HTML |
+| `{{SECTION_SKILLS}}` | 技能 |
+| `{{SKILLS}}` | 技能 HTML |
 
-a. `export-design` the base design (using `cv.canva_resume_design_id`) as PDF → get download URL
-b. `import-design-from-url` using that download URL → creates a new editable design (the duplicate)
-c. Note the new `design_id` for the duplicate
+## Canva 简历生成（可选）
 
-#### Step 2 — Read the design structure
+如果 `config/profile.yml` 中设置了 `cv.canva_resume_design_id`，生成前让用户选择：
+- **"HTML/PDF（快速，ATS优化）"** — 使用上述流程
+- **"Canva 简历（可视化，保留设计感）"** — 使用下方流程
 
-a. `get-design-content` on the new design → returns all text elements (richtexts) with their content
-b. Map text elements to CV sections by content matching:
-   - Look for the candidate's name → header section
-   - Look for "Summary" or "Professional Summary" → summary section
-   - Look for company names from cv.md → experience sections
-   - Look for degree/school names → education section
-   - Look for skill keywords → skills section
-c. If mapping fails, show the user what was found and ask for guidance
+如果用户没有 `cv.canva_resume_design_id`，跳过此提示，直接使用 HTML/PDF 流程。
 
-#### Step 3 — Generate tailored content
+### Canva 工作流
 
-Same content generation as the HTML flow (Steps 1-11 above):
-- Rewrite Professional Summary with JD keywords + exit narrative
-- Reorder experience bullets by JD relevance
-- Select top competencies from JD requirements
-- Inject keywords naturally (NEVER invent)
+#### Step 1 — 复制基础设计
 
-**IMPORTANT — Character budget rule:** Each replacement text MUST be approximately the same length as the original text it replaces (within ±15% character count). If tailored content is longer, condense it. The Canva design has fixed-size text boxes — longer text causes overlapping with adjacent elements. Count the characters in each original element from Step 2 and enforce this budget when generating replacements.
+a. `export-design` 基础设计（使用 `cv.canva_resume_design_id`）导出为 PDF → 获取下载 URL
+b. `import-design-from-url` 使用该下载 URL → 创建新的可编辑设计（副本）
+c. 记录副本的 `design_id`
 
-#### Step 4 — Apply edits
+#### Step 2 — 读取设计结构
 
-a. `start-editing-transaction` on the duplicate design
-b. `perform-editing-operations` with `find_and_replace_text` for each section:
-   - Replace summary text with tailored summary
-   - Replace each experience bullet with reordered/rewritten bullets
-   - Replace competency/skills text with JD-matched terms
-   - Replace project descriptions with top relevant projects
-c. **Reflow layout after text replacement:**
-   After applying all text replacements, the text boxes auto-resize but neighboring elements stay in place. This causes uneven spacing between work experience sections. Fix this:
-   1. Read the updated element positions and dimensions from the `perform-editing-operations` response
-   2. For each work experience section (top to bottom), calculate where the bullets text box ends: `end_y = top + height`
-   3. The next section's header should start at `end_y + consistent_gap` (use the original gap from the template, typically ~30px)
-   4. Use `position_element` to move the next section's date, company name, role title, and bullets elements to maintain even spacing
-   5. Repeat for all work experience sections
-d. **Verify layout before commit:**
-   - `get-design-thumbnail` with the transaction_id and page_index=1
-   - Visually inspect the thumbnail for: text overlapping, uneven spacing, text cut off, text too small
-   - If issues remain, adjust with `position_element`, `resize_element`, or `format_text`
-   - Repeat until layout is clean
-e. Show the user the final preview and ask for approval
-f. `commit-editing-transaction` to save (ONLY after user approval)
+a. `get-design-content` 查看新设计 → 返回所有文本元素（richtexts）及其内容
+b. 通过内容匹配将文本元素映射到简历段落：
+   - 查找候选人姓名 → 头部段落
+   - 查找"职业概述"或"Summary" → 概述段落
+   - 查找 cv.md 中的公司名称 → 经历段落
+   - 查找学位/学校名称 → 教育段落
+   - 查找技能关键词 → 技能段落
+c. 如果映射失败，向用户展示找到的内容并请求指导
 
-#### Step 5 — Export and download PDF
+#### Step 3 — 生成定制内容
 
-a. `export-design` the duplicate as PDF (format: a4 or letter based on JD location)
-b. **IMMEDIATELY** download the PDF using Bash:
+与 HTML 流程相同的内容生成（上述步骤 1-11）：
+- 用 JD 关键词 + 差异化故事重写职业概述
+- 按 JD 相关度重排经历要点
+- 根据 JD 要求选择核心能力
+- 自然注入关键词（绝不编造）
+
+**重要 — 字符预算规则：** 每个替换文本的长度必须近似于原文本（±15% 字符数）。如果定制内容更长，请缩句。Canva 设计包含固定大小文本框 — 过长文本会导致与相邻元素重叠。统计 Step 2 中每个原始元素的字符数，生成替换内容时强制执行此预算。
+
+#### Step 4 — 应用编辑
+
+a. `start-editing-transaction` 在副本设计上
+b. `perform-editing-operations` 使用 `find_and_replace_text` 处理每个段落
+c. 文本替换后重排布局
+d. `get-design-thumbnail` 确认布局
+e. 向用户展示最终预览并请求批准
+f. `commit-editing-transaction` 保存（仅在用户批准后）
+
+#### Step 5 — 导出并下载 PDF
+
+a. `export-design` 将副本导出为 PDF（格式：a4）
+b. **立即**使用 Bash 下载 PDF：
    ```bash
    curl -sL -o "output/cv-{candidate}-{company}-canva-{YYYY-MM-DD}.pdf" "{download_url}"
    ```
-   The export URL is a pre-signed S3 link that expires in ~2 hours. Download it right away.
-c. Verify the download:
+c. 验证下载：
    ```bash
    file output/cv-{candidate}-{company}-canva-{YYYY-MM-DD}.pdf
    ```
-   Must show "PDF document". If it shows XML or HTML, the URL expired — re-export and retry.
-d. Report: PDF path, file size, Canva design URL (for manual tweaking)
 
-#### Error handling
+## 生成后
 
-- If `import-design-from-url` fails → fall back to HTML/PDF pipeline with message
-- If text elements can't be mapped → warn user, show what was found, ask for manual mapping
-- If `find_and_replace_text` finds no matches → try broader substring matching
-- Always provide the Canva design URL so the user can edit manually if auto-edit fails
-
-## Post-generation
-
-Update tracker if the job is already registered: change PDF from ❌ to ✅.
+如果岗位已在追踪表中登记，更新 PDF 列：从 ❌ 改为 ✅。

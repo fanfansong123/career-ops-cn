@@ -1,74 +1,90 @@
-# Career-Ops Profile Configuration
-# Copy this file to config/profile.yml and fill in your details.
-# This is the single source of truth for your personal data across all modes.
+# Career-Ops-CN 用户配置
+# 将此文件复制为 config/profile.yml 并填写你的个人信息。
+# 这是所有模式中个人数据的唯一来源。
 
 candidate:
-  full_name: "Jane Smith"
-  email: "jane@example.com"
-  phone: "+1-555-0123"
-  location: "San Francisco, CA"
-  linkedin: "linkedin.com/in/janesmith"
-  portfolio_url: "https://janesmith.dev"
-  github: "github.com/janesmith"
-  twitter: "https://x.com/janesmith"
+  full_name: "张三"
+  # 英文名（可选，用于外企投递）
+  english_name: "San Zhang"
+  email: "zhangsan@example.com"
+  phone: "13800138000"
+  wechat: "zhangsan_wx"
+  location: "北京"
+  # 以下为可选字段
+  linkedin: "linkedin.com/in/zhangsan"    # 外企投递用
+  maimai: "maimai.cn/in/zhangsan"          # 脉脉个人主页
+  github: "github.com/zhangsan"
+  blog: "zhangsan.dev"
+  zhihu: "zhihu.com/people/zhangsan"
 
 target_roles:
-  # Your North Star roles — what you're optimizing for
+  # 你的目标岗位 — 系统优化方向
   primary:
-    - "Senior AI Engineer"
-    - "Staff ML Engineer"
-  # Archetypes help the evaluation system score fit
+    - "高级后端开发工程师"
+    - "技术专家（后端方向）"
+  # 岗位画像帮助评估系统打分
   archetypes:
-    - name: "AI/ML Engineer"
-      level: "Senior/Staff"
-      fit: "primary"        # primary = dream role, secondary = good fit, adjacent = stretch
-    - name: "AI Product Manager"
-      level: "Senior"
+    - name: "后端架构"
+      level: "高级/资深"
+      fit: "primary"        # primary = 理想岗位, secondary = 合适备选, adjacent = 可尝试
+    - name: "AI/大模型应用开发"
+      level: "高级"
       fit: "secondary"
-    - name: "Solutions Architect"
-      level: "Mid-Senior"
+    - name: "技术管理"
+      level: "一线TL/组长"
       fit: "adjacent"
 
 narrative:
-  # Your professional headline (1 line)
-  headline: "ML Engineer turned AI product builder"
-  # Your exit story — what makes you unique
-  exit_story: "Built and sold my SaaS after 5 years. Now focused on applied AI at scale."
-  # Your top 3-5 superpowers
+  # 职业标签（一行）
+  headline: "5年后端开发，专注高并发和系统架构"
+  # 你的差异化故事
+  exit_story: "从0到1搭建过日活百万的系统，擅长用技术解决业务问题"
+  # 你的核心优势（3-5个）
   superpowers:
-    - "End-to-end ML pipelines"
-    - "Fast prototyping (idea to prod in 2 weeks)"
-    - "Cross-functional communication"
-  # Proof points — projects, articles, case studies with measurable impact
+    - "高并发系统设计"
+    - "微服务架构落地"
+    - "从0到1项目推动"
+  # 成果证明 — 项目、文章、案例，带量化指标
   proof_points:
-    - name: "Project Alpha"
-      url: "https://janesmith.dev/project-alpha"
-      hero_metric: "Reduced inference latency 40%"
-    - name: "Open Source Tool"
-      url: "https://github.com/janesmith/tool"
-      hero_metric: "2K+ GitHub stars"
-  # Optional: dashboard/demo URL with credentials
-  # dashboard:
-  #   url: "https://janesmith.dev/demo"
-  #   password: "demo-2026"
+    - name: "微服务改造项目"
+      url: "https://zhangsan.dev/microservice"
+      hero_metric: "拆分12个微服务，支撑日均100万请求"
+    - name: "开源工具"
+      url: "https://github.com/zhangsan/tool"
+      hero_metric: "500+ GitHub stars"
 
 compensation:
-  target_range: "$150K-200K"     # Your target total comp
-  currency: "USD"
-  minimum: "$120K"               # Walk-away number
-  location_flexibility: "Remote preferred, 1 week/month on-site possible"
+  # 期望月薪范围（税前，单位：K）
+  target_range: "30k-45k"
+  # 期望年薪月数（含年终奖）
+  target_months: "14-16薪"
+  # 底线月薪（税前）
+  minimum: "25k"
+  # 薪资结构偏好
+  salary_structure: "高base+年终奖"   # 可选：高base+年终奖 / 低base+高股票 / 平衡
+  # 是否考虑期权/股票
+  equity: "可以考虑，但不作为主要决策因素"
+
+benefits:
+  # 五险一金最低要求
+  social_insurance_min: "全额缴纳"
+  housing_fund_min: "公积金12%"     # 5%-12%，期望最低比例
+  # 试用期可接受上限
+  probation_max_months: 3           # 试用期不超过X个月
+  probation_salary: "全薪"          # 全薪 / 8折 / 不接受打折
+  # 工作时间偏好
+  work_schedule: "双休"             # 双休 / 可接受大小周 / 不接受996
+  # 办公方式
+  remote_preference: "北京现场"     # 北京现场 / 混合办公 / 全国远程
 
 location:
-  country: "United States"
-  city: "San Francisco"
-  timezone: "PST"
-  visa_status: "No sponsorship needed"
-  # For remote roles outside your country:
-  # onsite_availability: "1 week/month in any city"
+  city: "北京"
+  # 是否考虑异地
+  relocate: "仅限一线城市"          # 不 / 仅限一线城市 / 全国
+  # 落户需求（北京/上海户口）
+  hukou: "不需要"
 
 cv:
-  output_format: "html" # "html" (default) or "latex"
-  # (Optional) Canva resume design ID for visual CV generation via /career-ops pdf.
-  # Find it in your Canva design URL: https://www.canva.com/design/DAxxxxxxx/...
-  # The ID starts with "D" and is 11 characters long.
+  output_format: "html"            # "html"（默认）或 "latex"
+  # (可选) Canva 简历设计 ID，用于通过 /career-ops pdf 生成视觉简历。
   # canva_resume_design_id: "DAxxxxxxxxx"

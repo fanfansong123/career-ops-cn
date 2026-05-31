@@ -1,75 +1,66 @@
-# Mode: auto-pipeline — Full Automatic Pipeline
+# Mode: auto-pipeline -- 全自动管道
 
-When the user pastes a JD (text or URL) without an explicit sub-command, execute the ENTIRE pipeline in sequence:
+当用户粘贴 JD（文本或 URL）且没有指定子命令时，依次执行完整管道：
 
-## Step 0 — Extract JD
+## Step 0 — 提取 JD
 
-If the input is a **URL** (not pasted JD text), follow this strategy to extract the content:
+如果输入是 **URL**（非粘贴的 JD 文本），按以下策略提取内容：
 
-**Priority order:**
+**优先级：**
 
-1. **Playwright (preferred):** Most job portals (Lever, Ashby, Greenhouse, Workday) are SPAs. Use `browser_navigate` + `browser_snapshot` to render and read the JD.
-2. **WebFetch (fallback):** For static pages (ZipRecruiter, WeLoveProduct, company career pages).
-3. **WebSearch (last resort):** Search for the role title + company in secondary portals that index the JD in static HTML.
+1. **Playwright（首选）:** 多数招聘门户是 SPA。使用 `browser_navigate` + `browser_snapshot` 渲染并读取 JD。
+2. **WebFetch（备选）:** 用于静态页面。
+3. **WebSearch（最后手段）:** 在索引了该 JD 的二级门户中搜索岗位名+公司。
 
-**If no method works:** Ask the candidate to paste the JD manually or share a screenshot.
+**如果所有方法都失败:** 请候选人手动粘贴 JD 或分享截图。
 
-**If the input is JD text** (not a URL): use directly, without needing to fetch.
+**如果输入是 JD 文本**（非 URL）：直接使用，无需获取。
 
-## Step 1 — A-G Evaluation
+## Step 1 — A-G 评估
 
-Execute the same as the `oferta` mode (read `modes/oferta.md` for all A-F blocks + Block G Posting Legitimacy).
+执行与 `oferta` 模式相同的评估（读取 `modes/oferta.md` 获取所有评分模块 + 岗位真实性评估）。
 
-## Step 2 — Save Report .md
+## Step 2 — 保存报告 .md
 
-Save the full evaluation in `reports/{###}-{company-slug}-{YYYY-MM-DD}.md` (see format in `modes/oferta.md`).
-Include Block G in the saved report. Add **URL:** {url} and **Legitimacy:** {tier} to the report header.
+将完整评估保存到 `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`（格式见 `modes/oferta.md`）。
+在报告头部包含 **链接:** {url} 和 **真实性:** {等级}。
 
-## Step 3 — Generate PDF
+## Step 3 — 生成 PDF
 
-Read `config/profile.yml`. Check `cv.output_format`:
+读取 `config/profile.yml`。检查 `cv.output_format`：
 
-- If `"latex"`, execute the full pipeline from `modes/latex.md`
-- Otherwise (default), execute the full pipeline from `modes/pdf.md`
+- 如果 `"latex"`，执行 `modes/latex.md` 的完整流程
+- 否则（默认），执行 `modes/pdf.md` 的完整流程
 
-## Step 4 — Draft Application Answers (only if score >= 4.5)
+## Step 4 — 草拟投递回答（仅当评分 >= 4.5）
 
-If the final score is >= 4.5, generate a draft of responses for the application form:
+如果最终评分 >= 4.5，生成投递表单回答草稿：
 
-1. **Extract form questions**: Use Playwright to navigate to the form and take a snapshot. If they cannot be extracted, use the generic questions.
-2. **Generate responses** following the tone (see below).
-3. **Save in the report** as section `## H) Draft Application Answers`.
+1. **提取表单问题**: 使用 Playwright 导航到表单并截图。如无法提取，使用通用问题。
+2. **生成回答** 按以下语气。
+3. **保存到报告** 作为 `## H) 投递回答草稿` 区块。
 
-### Generic questions (use if they cannot be extracted from the form)
+### 通用问题（如无法从表单提取）
 
-- Why are you interested in this role?
-- Why do you want to work at [Company]?
-- Tell us about a relevant project or achievement
-- What makes you a good fit for this position?
-- How did you hear about this role?
+- 为什么对这个岗位感兴趣？
+- 为什么想加入 [公司]？
+- 介绍一个相关的项目或成果
+- 什么让你适合这个岗位？
+- 你是如何了解到这个岗位的？
 
-### Tone for Form Answers
+### 回答语气
 
-**Position: "I'm choosing you."** The candidate has options and is choosing this company for specific reasons.
+**立场: "我在选择你们。"** 候选人是有选择的，是出于特定原因选择了这家公司。
 
-**Tone rules:**
-- **Confident without arrogance**: "I've spent the past year building production AI agent systems — your role is where I want to apply that experience next"
-- **Selective without arrogance**: "I've been intentional about finding a team where I can contribute meaningfully from day one"
-- **Specific and concrete**: Always reference something REAL from the JD or the company, and something REAL from the candidate's experience
-- **Direct, without fluff**: 2-4 sentences per response. No "I'm passionate about..." or "I would love the opportunity to..."
-- **The hook is the proof, not the statement**: Instead of "I'm great at X", say "I built X that does Y"
+**语气规则:**
+- **自信而不傲慢**
+- **有选择性而不自大**
+- **具体而非抽象**: 始终引用 JD 或公司的真实内容，以及候选人经历中的真实内容
+- **直接，不废话**: 每个回答 2-4 句。
+- **钩子是证明而非声明**: 与其说"我擅长X"，不如说"我做过X，结果Y"
 
-**Framework per question:**
-- **Why this role?** → "Your [specific thing] maps directly to [specific thing I built]."
-- **Why this company?** → Mention something specific about the company. "I've been using [product] for [time/purpose]."
-- **Relevant experience?** → A quantified proof point. "Built [X] that [metric]. Sold the company in 2025."
-- **Good fit?** → "I sit at the intersection of [A] and [B], which is exactly where this role lives."
-- **How did you hear?** → Honest: "Found through [portal/scan], evaluated against my criteria, and it scored highest."
+## Step 5 — 更新追踪表
 
-**Language**: Always in the language of the JD (EN default). Apply `/tech-translate`.
+记录到 `data/applications.md`，包含所有列，PDF 标记为 ✅。
 
-## Step 5 — Update Tracker
-
-Record it in `data/applications.md` with all columns including Report and PDF as ✅.
-
-**If any step fails**, continue with the next ones and mark the failed step as pending in the tracker.
+**如果任何步骤失败**，继续执行后续步骤，在追踪表中标记失败的步骤为待处理。

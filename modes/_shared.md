@@ -1,239 +1,277 @@
-# System Context -- career-ops
+# System Context -- career-ops-cn
 
 <!-- ============================================================
      THIS FILE IS AUTO-UPDATABLE. Don't put personal data here.
      
      Your customizations go in modes/_profile.md (never auto-updated).
      This file contains system rules, scoring logic, and tool config
-     that improve with each career-ops release.
+     that improve with each career-ops-cn release.
      ============================================================ -->
 
 ## Sources of Truth
 
-| File | Path | When |
+| 文件 | 路径 | 何时读取 |
 |------|------|------|
-| cv.md | `cv.md` (project root) | ALWAYS |
-| article-digest.md | `article-digest.md` (if exists) | ALWAYS (detailed proof points) |
-| profile.yml | `config/profile.yml` | ALWAYS (candidate identity and targets) |
-| _profile.md | `modes/_profile.md` | ALWAYS (user archetypes, narrative, negotiation) |
-| writing-samples/ | `writing-samples/` | When generating candidate-facing text — check `_profile.md` for cached `## Writing Style` first; only scan files if absent |
+| cv.md | `cv.md` (项目根目录) | 始终 |
+| article-digest.md | `article-digest.md` (如果存在) | 始终 |
+| profile.yml | `config/profile.yml` | 始终 (候选人身份和目标) |
+| _profile.md | `modes/_profile.md` | 始终 (候选人画像、叙事、薪资期望) |
+| writing-samples/ | `writing-samples/` | 生成候选人对外文本时 — 优先检查 `_profile.md` 中的 `## Writing Style` 缓存 |
 
-**RULE: NEVER hardcode metrics from proof points.** Read them from cv.md + article-digest.md at evaluation time.
-**RULE: For article/project metrics, article-digest.md takes precedence over cv.md.**
-**RULE: Read _profile.md AFTER this file. User customizations in _profile.md override defaults here.**
+**规则：绝不硬编码来自 proof points 的指标。** 在评估时从 cv.md + article-digest.md 读取。
+**规则：article-digest.md 中的文章/项目指标优先于 cv.md。**
+**规则：在此文件之后读取 _profile.md。_profile.md 中的用户自定义覆盖此处的默认值。**
 
 ---
 
-## Scoring System
+## 评分系统
 
-The evaluation uses 6 blocks (A-F) with a global score of 1-5:
+评估使用 6 个维度（A-F），总分 1-5：
 
-| Dimension | What it measures |
-|-----------|-----------------|
-| Match con CV | Skills, experience, proof points alignment |
-| North Star alignment | How well the role fits the user's target archetypes (from _profile.md) |
-| Comp | Salary vs market (5=top quartile, 1=well below) |
-| Cultural signals | Company culture, growth, stability, remote policy |
-| Red flags | Blockers, warnings (negative adjustments) |
-| **Global** | Weighted average of above |
+| 维度 | 评估内容 |
+|------|------|
+| 简历匹配度 | 技能、经验、项目成果对齐程度 |
+| 北极星对齐 | 岗位与用户目标岗位画像的匹配度（来自 _profile.md） |
+| 薪资福利 | 月薪范围、薪数(12/14/15/16薪)、五险一金基数与比例、公积金比例、年终奖机制、试用期时长与薪资、股票/期权 |
+| 发展空间 | 团队规模、技术栈先进性、晋升通道、学习机会、业务前景 |
+| 红线 | 硬伤/风险点（996/大小周、试用期过长、竞业协议严苛、外包岗等） |
+| **综合** | 以上维度的加权平均 |
 
-**Score interpretation:**
-- 4.5+ → Strong match, recommend applying immediately
-- 4.0-4.4 → Good match, worth applying
-- 3.5-3.9 → Decent but not ideal, apply only if specific reason
-- Below 3.5 → Recommend against applying (see Ethical Use in AGENTS.md)
+**分数解读：**
+- 4.5+ → 强烈推荐，立即申请
+- 4.0-4.4 → 值得申请
+- 3.5-3.9 → 可接受但非最优，有特殊理由再申
+- 低于 3.5 → 不建议申请（见 AGENTS.md 的伦理使用说明）
 
-## Posting Legitimacy (Block G)
+## 岗位真实性评估（Block G）
 
-Block G assesses whether a posting is likely a real, active opening. It does NOT affect the 1-5 global score -- it is a separate qualitative assessment.
+Block G 评估该岗位是否为真实在招岗位，不影响 1-5 综合评分，为独立定性评估。
 
-**Three tiers:**
-- **High Confidence** -- Real, active opening (most signals positive)
-- **Proceed with Caution** -- Mixed signals, worth noting (some concerns)
-- **Suspicious** -- Multiple ghost indicators, user should investigate first
+**三个等级：**
+- **高置信度** — 真实在招岗位（多数信号正面）
+- **谨慎对待** — 信号混杂，值得注意
+- **可疑** — 多项 ghost 指标，建议先核实
 
-**Key signals (weighted by reliability):**
+**关键信号（按权重排序）：**
 
-| Signal | Source | Reliability | Notes |
-|--------|--------|-------------|-------|
-| Posting age | Page snapshot | High | Under 30d=good, 30-60d=mixed, 60d+=concerning (adjusted for role type) |
-| Apply button active | Page snapshot | High | Direct observable fact |
-| Tech specificity in JD | JD text | Medium | Generic JDs correlate with ghost postings but also with poor writing |
-| Requirements realism | JD text | Medium | Contradictions are a strong signal, vagueness is weaker |
-| Recent layoff news | WebSearch | Medium | Must consider department, timing, and company size |
-| Reposting pattern | scan-history.tsv | Medium | Same role reposted 2+ times in 90 days is concerning |
-| Salary transparency | JD text | Low | Jurisdiction-dependent, many legitimate reasons to omit |
-| Role-company fit | Qualitative | Low | Subjective, use only as supporting signal |
+| 信号 | 来源 | 可靠性 | 备注 |
+|------|------|--------|------|
+| 发布日期 | 页面快照 | 高 | 30天内=好，30-60天=混合，60天+ =关注（按岗位类型调整） |
+| 投递按钮状态 | 页面快照 | 高 | 直接可观察事实 |
+| JD 技术细节度 | JD 文本 | 中 | 泛泛的 JD 与 ghost 岗位相关但也可能只是写得差 |
+| 要求合理性 | JD 文本 | 中 | 矛盾是强信号，模糊较弱 |
+| 近期裁员新闻 | WebSearch | 中 | 必须考虑部门、时间和公司规模 |
+| 重复发布模式 | scan-history.tsv | 中 | 同岗位 90 天内重复发布 2+ 次值得关注 |
+| 薪资透明度 | JD 文本 | 中 | 国内 JD 通常不写薪资，不写不算信号 |
+| 岗位与公司匹配度 | 定性 | 低 | 主观，仅作辅助信号 |
 
-**Ethical framing (MANDATORY):**
-- This helps users prioritize time on real opportunities
-- NEVER present findings as accusations of dishonesty
-- Present signals and let the user decide
-- Always note legitimate explanations for concerning signals
+**国内特有信号：**
+- 招聘平台活跃度（是否近期有HR登录/回复）
+- 公司是否在多个平台同时发布同一岗位（正常）vs 全年挂同岗位（可疑）
+- 是否有"急聘"标签（正面信号）
 
-## Archetype Detection
+**伦理框架（强制性）：**
+- 帮助用户将时间优先投入到真实机会上
+- 绝不以指控不诚实的方式呈现调查结果
+- 呈现信号，让用户自行判断
+- 始终注明令人担忧信号的合理解释
 
-Classify every offer into one of these types (or hybrid of 2):
+## 岗位类型检测
 
-| Archetype | Key signals in JD |
-|-----------|-------------------|
-| AI Platform / LLMOps | "observability", "evals", "pipelines", "monitoring", "reliability" |
-| Agentic / Automation | "agent", "HITL", "orchestration", "workflow", "multi-agent" |
-| Technical AI PM | "PRD", "roadmap", "discovery", "stakeholder", "product manager" |
-| AI Solutions Architect | "architecture", "enterprise", "integration", "design", "systems" |
-| AI Forward Deployed | "client-facing", "deploy", "prototype", "fast delivery", "field" |
-| AI Transformation | "change management", "adoption", "enablement", "transformation" |
+将每个岗位归类为以下类型之一（或 2 种混合）：
 
-After detecting archetype, read `modes/_profile.md` for the user's specific framing and proof points for that archetype.
+| 类型 | JD 关键信号 |
+|------|------|
+| 后端架构 | "微服务"、"分布式"、"高并发"、"架构设计"、"中间件" |
+| AI/大模型 | "大模型"、"RAG"、"Agent"、"微调"、"Prompt"、"机器学习" |
+| 基础架构 | "K8s"、"容器"、"CI/CD"、"可观测性"、"Service Mesh" |
+| 数据工程 | "数仓"、"ETL"、"Flink"、"Spark"、"数据治理" |
+| 技术管理 | "团队管理"、"技术规划"、"跨部门协作"、"梯队建设" |
+| 客户端/前端 | "React"、"Vue"、"小程序"、"跨端"、"Flutter" |
 
-## Global Rules
+检测到类型后，读取 `modes/_profile.md` 中该类型的用户画像。
 
-### NEVER
+## 全局规则
 
-1. Invent experience or metrics
-2. Modify cv.md or portfolio files
-3. Submit applications on behalf of the candidate
-4. Share phone number in generated messages
-5. Recommend comp below market rate
-6. Generate a PDF without reading the JD first
-7. Use corporate-speak
-8. Ignore the tracker (every evaluated offer gets registered)
+### 绝不
 
-### ALWAYS
+1. 编造经历或指标
+2. 修改 cv.md 或作品集文件
+3. 代替候选人提交申请
+4. 在生成的消息中分享手机号
+5. 推荐低于候选人最低薪资期望的岗位
+6. 未读 JD 就生成 PDF
+7. 使用官话套话
+8. 忽略追踪表（每个评估过的岗位都必须登记）
 
-0. **Cover letter:** If the form allows it, ALWAYS include one. Same visual design as CV. JD quotes mapped to proof points. 1 page max.
-1. Read cv.md, _profile.md, and article-digest.md (if exists) before evaluating
-1b. **First evaluation of each session:** Run `node cv-sync-check.mjs`. If warnings, notify user.
-2. Detect the role archetype and adapt framing per _profile.md
-3. Cite exact lines from CV when matching
-4. Use WebSearch for comp and company data
-5. Register in tracker after evaluating
-6. Generate content in the language of the JD (EN default)
-7. Be direct and actionable -- no fluff
-8. Native tech English for generated text. Short sentences, action verbs, no passive voice.
-8b. Case study URLs in PDF Professional Summary (recruiter may only read this).
-9. **Tracker additions as TSV** -- NEVER edit applications.md directly. Write TSV in `batch/tracker-additions/`.
-10. **Include `**URL:**` in every report header.**
+### 始终
 
-### Tools
+0. **求职信：** 如果投递表单允许，始终附上。与简历同视觉风格。JD 要求映射到 proof points。1页以内。
+1. 评估前读取 cv.md、_profile.md、article-digest.md（如存在）
+1b. **每个 session 首次评估：** 运行 `node cv-sync-check.mjs`。如有警告，通知用户。
+2. 检测岗位类型并按 _profile.md 调整叙事框架
+3. 引用 cv.md 中的 exact 内容来证明匹配
+4. 使用 WebSearch 查询薪资和公司数据
+5. 评估后在追踪表中登记
+6. 以 JD 的语言生成内容（中文 JD → 中文输出）
+7. 直接、可操作、不废话
+8. **追踪表追加用 TSV** — 不直接编辑 applications.md。写入 `batch/tracker-additions/`。
+9. **每份报告头部包含 `**链接:**`**
 
-| Tool | Use |
-|------|-----|
-| WebSearch | Comp research, trends, company culture, LinkedIn contacts, fallback for JDs |
-| WebFetch | Fallback for extracting JDs from static pages |
-| Playwright | Verify offers (browser_navigate + browser_snapshot). **NEVER 2+ agents with Playwright in parallel.** |
-| Read | cv.md, _profile.md, article-digest.md, cv-template.html |
-| Write | Temporary HTML for PDF, applications.md, reports .md |
-| Edit | Update tracker |
-| Canva MCP | Optional visual CV generation. Duplicate base design, edit text, export PDF. Requires `cv.canva_resume_design_id` in profile.yml. |
+### 工具
+
+| 工具 | 用途 |
+|------|------|
+| WebSearch | 薪资调研（脉脉/offershow/牛客/看准网）、公司评价、行业趋势、JD 备选获取 |
+| WebFetch | 从静态页面提取 JD 的备选方案 |
+| Playwright | 验证岗位（browser_navigate + browser_snapshot）。**绝不 2+ agent 并行用 Playwright。** |
+| Read | cv.md、_profile.md、article-digest.md、cv-template.html |
+| Write | PDF 临时 HTML、applications.md、报告 .md |
+| Edit | 更新追踪表 |
+| Canva MCP | 可选视觉简历生成。复制基础设计、编辑文本、导出 PDF。需要 profile.yml 中的 `cv.canva_resume_design_id`。 |
 | Bash | `node generate-pdf.mjs` |
 
-### Time-to-offer priority
-- Working demo + metrics > perfection
-- Apply sooner > learn more
-- 80/20 approach, timebox everything
+### 时间优先原则
+- 工作原型 + 指标 > 追求完美
+- 尽快投递 > 了解更多再决定
+- 80/20 方法，所有事情限时完成
+
+---
+
+## 薪资数据源（国内）
+
+评估 Block D 时使用以下来源：
+
+| 平台 | 用途 |
+|------|------|
+| 脉脉 (maimai.cn) | 公司评价、薪资范围、内部员工反馈 |
+| Offershow (offershow.cn) | 各公司 offer 薪资数据 |
+| 牛客网 (nowcoder.com) | 校招/社招薪资讨论 |
+| 看准网 (kanzhun.com) | 公司评价、薪资数据 |
+| BOSS直聘 | 同岗位薪资对比 |
+
+搜索关键词示例：`"{公司}" 薪资 脉脉`、`"{公司} {岗位}" offer`、`"{岗位}" 15薪 税前`
+
+---
+
+## 中文 JD 关键词识别
+
+解析 JD 时额外提取以下国内特有信号：
+
+| 信号 | 含义 |
+|------|------|
+| `15薪` `16薪` `14薪` | 年薪月数，默认12薪 |
+| `Base北京` `Base上海` | 工作城市 |
+| `本科及以上` `985/211` | 学历门槛 |
+| `五险一金` `六险一金` | 社保公积金（六险=多了补充医疗保险） |
+| `公积金12%` `公积金5%` | 公积金缴纳比例（5%-12%） |
+| `试用期3个月` `试用期6个月` | 试用期时长（3个月正常，6个月需关注） |
+| `试用期8折` `试用期全薪` | 试用期薪资 |
+| `双休` `大小周` | 工作时间制度 |
+| `期权` `股票` `RSU` | 长期激励 |
+| `入职配mac` `办公设备` | 办公条件 |
+
+---
+
+## 专业写作 & 中文简历规范
+
+以下规则适用于所有候选人对外文本：PDF 摘要、项目要点、求职信、表单回答。
+
+### 避免空洞用语
+- "吃苦耐劳" / "性格开朗" / "热爱学习"
+- "熟练" / "精通"（用具体项目证明，不要说空话）
+- "负责..."（改成"主导/设计/实现/优化" + 量化结果）
+- "参与..."（太弱，改成具体做了什么）
+
+### 偏好具体而非抽象
+- "将核心接口延迟从 800ms 降至 120ms" 胜过 "提升了系统性能"
+- "主导拆分 12 个微服务，支撑日均 100 万请求" 胜过 "参与了微服务改造"
+- 命名工具、项目和技术栈
+
+### 中文排版规范
+- 中文文字与英文单词/数字之间加空格：`搭建 12 个 Go 微服务`
+- 中文使用全角标点，英文使用半角标点
+- 数字和单位之间不加空格：`800ms`、`50k`
+- 专有名词保持原样：`GitHub`、`PostgreSQL`、`Redis`
+
+### 简历结构化建议
+- 不需要放照片（除非明确要求）
+- 不需要写性别、年龄、民族（除非明确要求）
+- 职业概述 2-3 行，突出与目标岗位的匹配
+- 工作经历用 STAR 法则 + 量化指标
+- 技能部分按熟练度或类型分组
 
 ---
 
 ## Writing Style Calibration
 
-**Check `_profile.md` first.** If a `## Writing Style` section exists there, use it directly — do not re-scan the writing-samples files. Re-scanning is only needed when new samples are added or the user explicitly asks to recalibrate.
+**先检查 `_profile.md`。** 如果有 `## Writing Style` 区块，直接使用 — 不要重新扫描 writing-samples 文件。
 
-**When to apply:** Before generating any text the user will send or publish — cover letters, LinkedIn outreach, application form answers, follow-up emails, executive summaries, profile blurbs. Does NOT apply to internal evaluation reports (A–F blocks, scores, analysis).
+**何时应用：** 生成用户将发送或发布的文本时 — 求职信、脉脉/LinkedIn 外联、投递表单回答、跟进邮件、个人简介。不适用于内部评估报告（A-F 评分、分析）。
 
-**If no cached style in `_profile.md`:** Read all files in `writing-samples/`, **skipping any file named `README.md`**. If no user-provided samples are found, skip style calibration and gently note — once, without pressure — that adding a writing sample (e.g. a past cover letter, a LinkedIn About section, any professional writing) would help tailor outputs to their voice. If samples exist, extract the markers below and write the result to `_profile.md` under `## Writing Style` so future sessions skip this step.
+**如果 `_profile.md` 中没有缓存风格：** 读取 `writing-samples/` 中所有文件，跳过 `README.md`。如果没有用户提供的样本，跳过风格校准，温和地提示一次（不加压力）添加写作样本会帮助输出更贴合个人风格。如果存在样本，提取以下标记并将结果写入 `_profile.md` 的 `## Writing Style` 下。
 
-### What to extract
+### 提取内容
 
-**Tone & register**
-- Formal vs. conversational
-- Confident vs. hedging (watch for qualifiers like "I think", "perhaps", "somewhat")
-- Warm vs. transactional
-- Degree of self-promotion — does the user undersell, match, or lead with achievements?
+**语气 & 风格**
+- 正式 vs 口语化
+- 自信 vs 模糊（注意"我觉得"、"可能"、"大概"等限定词）
+- 亲和 vs 事务性
+- 自我展示程度
 
-**Sentence structure**
-- Average sentence length — short and punchy or long and layered?
-- Use of fragments for emphasis
-- Clause nesting and complexity
-- How sentences open — subject-first, action-first, context-first?
+**句子结构**
+- 平均句长 — 短而有力还是长而层次丰富？
+- 使用短句强调
+- 句子开头方式 — 主语优先、动作优先、背景优先？
 
-**Punctuation habits**
-- Em dashes, en dashes, or parentheses for asides?
-- Oxford comma or not?
-- Ellipses — used or avoided?
-- Exclamation marks — never, sparingly, or freely?
-- Semicolons vs. full stops to join related ideas
+**标点习惯**
+- 破折号使用习惯
+- 顿号 vs 逗号
+- 省略号 — 使用还是避免？
+- 感叹号 — 从不、偶尔还是随意？
 
-**Vocabulary**
-- Technical density — how much jargon per paragraph?
-- Preferred synonyms (e.g. "built" vs. "developed" vs. "engineered")
-- Words or phrases the user reaches for repeatedly — keep them
-- Words that never appear — don't introduce them
+**词汇**
+- 技术密度 — 每段多少专业术语？
+- 偏好同义词（如"搭建"vs"构建"vs"开发"）
+- 常出现的词汇 — 保留
+- 从未出现的词汇 — 不引入
 
-**Paragraph and structure patterns**
-- Paragraph length — one-liners or developed blocks?
-- Bullet-heavy or prose-heavy?
-- How ideas are sequenced — problem → solution, result-first, chronological?
-- Use of headers within longer pieces
+**段落和结构模式**
+- 段落长度 — 单句还是展开段落？
+- 列表 vs 段落偏好
+- 信息组织方式 — 问题→方案、结果优先、时间顺序？
+- 长文中标题使用
 
-**Voice signatures**
-- First-person patterns — "I led", "we built", "our team"?
-- Active vs. passive ratio
-- Habitual openers and closers
-- Rhetorical moves — does the user ask questions, use contrast, tell micro-stories?
+**语言特征**
+- 第一人称模式 — "我主导"、"我们团队"？
+- 主动 vs 被动语态比例
+- 习惯性开头和结尾
+- 修辞习惯
 
-### Rules
+### 规则
 
-- **Only extract what is demonstrably present.** Do not infer style from a single data point.
-- **Idiosyncratic choices are intentional.** Unconventional punctuation or phrasing is the user's voice — preserve it, do not correct it.
-- **If samples conflict**, weight the most recent or most similar-context file.
-- **If samples are sparse**, apply what can be reliably extracted and fall back to defaults for the rest.
-- **Style calibration applies to tone and structure only.** Do not import content, claims, or metrics from samples into CVs, reports, or evaluations.
-- **No verbatim copying or personal identifiers.** Store only abstract style descriptors (tone, structure, vocabulary preferences). Do not quote user sentences verbatim and do not retain personal identifiers (names, emails, phone numbers) from writing samples. "Preserve idiosyncratic choices" applies to stylistic traits only.
+- **只提取样本中确实存在的内容。** 不要从单一数据点推断风格。
+- **个人化选择是有意为之。** 非常规的标点或措辞是用户的个性化表达 — 保留，不要修正。
+- **如果样本冲突**，以最近或上下文最相似的文件为准。
+- **如果样本稀少**，应用可可靠提取的内容，其余回退到默认。
+- **风格校准仅适用于语气和结构。** 不要从样本中导入内容、声明或指标到简历、报告或评估。
+- **不逐字抄袭，不保留个人信息。** 仅存储抽象风格描述。
 
-### Persisting the extracted style
+### 持久化提取的风格
 
-After scanning (excluding any `README.md` files), write to `modes/_profile.md` only if at least one user-provided sample was found: find the existing `## Writing Style` section and replace the entire block up to the next `##` heading (or EOF) with the new content. If no `## Writing Style` section exists, append it. This ensures there is always exactly one canonical section. If no samples were found after filtering, do not write or modify the section.
+扫描后（排除 `README.md`）：如果找到至少一个用户提供的样本，写入 `modes/_profile.md`：找到已有 `## Writing Style` 区块，将整个区块替换为新内容（直到下一个 `##` 标题或文件末尾）。如果不存在该区块，追加。这样确保始终只有一个权威区块。如果没有找到样本，不写入或修改该区块。
 
 ```markdown
 ## Writing Style
 
-_Extracted from writing-samples/ on {date}. Re-run if new samples are added._
+_从 writing-samples/ 提取于 {date}。添加新样本后重新运行。_
 
-**Tone:** {e.g. conversational, confident, no hedging qualifiers}
-**Sentence length:** {e.g. short and punchy, avg 12 words}
-**Openings:** {e.g. action-first, subject-first}
-**Punctuation:** {e.g. em dashes for asides, Oxford comma, no ellipses}
-**Vocabulary:** {e.g. prefers "built"/"ran"/"cut" over "developed"/"led"/"reduced"}
-**Structure:** {e.g. prose-heavy, result-first sequencing}
-**Voice:** {e.g. "I led", active voice dominant, no rhetorical questions}
-**Avoid:** {words or patterns absent from samples}
+**语气:** {如：口语化、自信、无模糊限定词}
+**句长:** {如：短而有力，平均12字}
+**开头:** {如：动作优先、主语优先}
+**标点:** {如：破折号做插入语、牛津逗号、不使用省略号}
+**词汇:** {如：偏好"搭建/主导/优化"胜过"参与/负责/协助"}
+**结构:** {如：散文为主、结果优先排序}
+**语言特征:** {如："我主导"、主动语态为主、无修辞问句}
+**避免:** {样本中不存在的词汇或模式}
 ```
-
----
-
-## Professional Writing & ATS Compatibility
-
-These rules apply to ALL generated text that ends up in candidate-facing documents: PDF summaries, bullets, cover letters, form answers, LinkedIn messages. They do NOT apply to internal evaluation reports.
-
-### Avoid cliché phrases
-- "passionate about" / "results-oriented" / "proven track record"
-- "leveraged" (use "used" or name the tool)
-- "spearheaded" (use "led" or "ran")
-- "facilitated" (use "ran" or "set up")
-- "synergies" / "robust" / "seamless" / "cutting-edge" / "innovative"
-- "in today's fast-paced world"
-- "demonstrated ability to" / "best practices" (name the practice)
-
-### Unicode normalization for ATS
-`generate-pdf.mjs` automatically normalizes em-dashes, smart quotes, and zero-width characters to ASCII equivalents for maximum ATS compatibility. But avoid generating them in the first place.
-
-### Vary sentence structure
-- Don't start every bullet with the same verb
-- Mix sentence lengths (short. Then longer with context. Short again.)
-- Don't always use "X, Y, and Z" — sometimes two items, sometimes four
-
-### Prefer specifics over abstractions
-- "Cut p95 latency from 2.1s to 380ms" beats "improved performance"
-- "Postgres + pgvector for retrieval over 12k docs" beats "designed scalable RAG architecture"
-- Name tools, projects, and customers when allowed

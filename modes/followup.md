@@ -1,173 +1,88 @@
-# Mode: followup -- Follow-up Cadence Tracker
+# Mode: followup -- 跟进提醒
 
-## Purpose
+## 目的
 
-Track follow-up cadence for active applications. Flag overdue follow-ups, extract contacts from notes, and generate tailored follow-up email/LinkedIn drafts using report context.
+追踪活跃投递的跟进节奏。标记超时应跟进的、从备注中提取联系人信息、使用报告上下文生成个性化跟进邮件/消息草稿。
 
-## Inputs
+## 输入
 
-- `data/applications.md` — Application tracker
-- `data/follow-ups.md` — Follow-up history (created on first use)
-- `reports/` — Evaluation reports (for context in drafts)
-- `config/profile.yml` — User profile (name, identity)
-- `cv.md` — CV for proof points in drafts
+- `data/applications.md` — 投递追踪表
+- `data/follow-ups.md` — 跟进历史（首次使用时创建）
+- `reports/` — 评估报告（用于草稿上下文）
+- `config/profile.yml` — 用户配置
+- `cv.md` — 简历（用于草稿中的成果证明）
 
-## Step 1 — Run Cadence Script
-
-Execute:
+## Step 1 — 运行跟进脚本
 
 ```bash
 node followup-cadence.mjs
 ```
 
-Parse the JSON output. It contains:
+解析 JSON 输出。
 
-| Key | Contents |
-|-----|----------|
-| `metadata` | Analysis date, total tracked, actionable count, overdue/urgent/cold/waiting counts |
-| `entries` | Per-application: company, role, status, days since application, follow-up count, urgency, next follow-up date, extracted contacts, report path |
-| `cadenceConfig` | Cadence rules (applied: 7 days, responded: 3 days, interview: 1 day) |
+如果无可操作项，告诉用户：
+> "没有需要跟进的活跃投递。先用 /career-ops 投一些岗位，等一段时间再回来。"
 
-If no actionable entries, tell the user:
-> "No active applications to follow up on. Apply to some roles first with `/career-ops` and come back when they're aging."
+## Step 2 — 显示仪表盘
 
-## Step 2 — Display Dashboard
-
-Show a cadence dashboard sorted by urgency (urgent > overdue > waiting > cold):
+按紧急度排序（紧急 > 超时 > 等待 > 已冷）：
 
 ```
-Follow-up Cadence Dashboard — {date}
-{N} applications tracked, {N} actionable
-
-| # | Company | Role | Status | Days | Follow-ups | Next | Urgency | Contact |
+跟进仪表盘 — {date}
+{N} 个投递在追踪中，{N} 个需要操作
 ```
 
-Use visual indicators:
-- **URGENT** — respond within 24 hours (company replied)
-- **OVERDUE** — follow-up is past due
-- **waiting (X days)** — on track, follow-up scheduled
-- **COLD** — 2+ follow-ups sent, suggest closing
+使用可视化标记：
+- **紧急** — 24小时内回复（公司已回复你）
+- **超时** — 跟进已过期
+- **等待（X天）** — 按计划，跟进已排期
+- **已冷** — 已发2+次跟进，建议关闭
 
-## Step 3 — Generate Follow-up Drafts
+## Step 3 — 生成跟进草稿
 
-For each **overdue** or **urgent** entry only:
+对每个**超时**或**紧急**项：
 
-1. Read the linked report (`reportPath` from JSON) for company context
-2. Read `cv.md` for proof points
-3. Read `config/profile.yml` for candidate name and identity
+1. 读取关联报告获取公司上下文
+2. 读取 cv.md 获取成果证明
+3. 读取 profile.yml 获取候选人信息
 
-### Email Follow-up Framework (first follow-up, followupCount == 0)
+### 邮件跟进框架（首次跟进）
 
-Generate a 3-4 sentence email:
+3-4 句邮件：
 
-1. **Sentence 1:** Reference the specific role + when you applied. Be specific — mention the company name and role title.
-2. **Sentence 2:** One concrete value-add from the report's Block B match or a proof point from cv.md. Quantify if possible.
-3. **Sentence 3:** Soft ask + availability. Offer a specific time window ("this week" or "next Tuesday").
-4. **Sentence 4 (optional):** Brief mention of a relevant recent project or achievement.
+1. **第1句:** 提到具体岗位 + 投递时间
+2. **第2句:** 一个具体的附加价值（来自报告匹配或成果证明），尽量量化
+3. **第3句:** 温和询问 + 可用时间窗口
+4. **第4句（可选）:** 简要提及一个相关近期项目或成果
 
-**Rules:**
-- Professional but warm, NOT desperate
-- **NEVER** use "just checking in", "just following up", "touching base", or "circling back"
-- Lead with value, not with the ask
-- Reference something specific to THAT company (from report Block A)
-- Keep under 150 words
-- Include a subject line
-- Use the candidate's name from `config/profile.yml`
+**规则:**
+- 专业但温和，绝不卑微
+- **绝不**使用"冒昧打扰"、"跟进一下"、"checking in"等
+- 以价值开头，不以请求开头
+- 引用该公司具体信息（来自报告 Block A）
+- 控制在 150 字以内
+- 包含邮件标题
 
-**Example tone:**
-> Subject: Re: Senior PHP/Laravel Developer — IxDF
->
-> Hi [contact name or "team"],
->
-> I submitted my application for the Senior PHP/Laravel Developer role on April 7th. I wanted to share that my production Laravel app (Barbeiro.app — 120 models, 315 API endpoints, full test suite) closely mirrors the TDD-driven culture described in the posting.
->
-> I'd love to discuss how my 15 years of PHP experience and hands-on AI tooling workflow could contribute to IxDF's platform. Would any time this week work for a brief conversation?
->
-> Best,
-> [Name]
+### 脉脉/BOSS直聘 跟进
 
-### LinkedIn Follow-up (if no email contact found)
+使用 contacto 框架：3 句话。
+- 公司相关钩子 → 成果证明 → 温和询问
 
-Reuse the contacto framework: 3 sentences, 300 character max.
-- Hook specific to company → proof point → soft ask
-- Suggest the user run `/career-ops contacto {company}` to find the right person first
+### 二次跟进
 
-### Second Follow-up (followupCount == 1)
+比第一次更短（2-3句）。换一个**新角度**：
+- 分享一个相关洞察、文章或项目更新
+- 不要重复第一次的内容
 
-Shorter than first (2-3 sentences). Take a **new angle**:
-- Share a relevant insight, article, or project update
-- Don't repeat the first follow-up's content
-- Still reference the role specifically
+### 已冷投递
 
-### Cold Application (followupCount >= 2)
+不再生成跟进。建议：
+> "该投递已有 {N} 次跟进无回复。考虑：更新状态为'已放弃'、通过 /career-ops contacto 尝试其他联系人、保留'已投递'但降低优先级"
 
-Do NOT generate another follow-up. Instead suggest:
-> "This application has had {N} follow-ups with no response. Consider:
-> - Updating status to `Discarded` if the role seems filled
-> - Trying a different contact via `/career-ops contacto`
-> - Keeping in `Applied` status but deprioritizing"
+## 跟进节奏参考
 
-## Step 4 — Present Drafts
-
-For each draft, show:
-
-```
-## Follow-up: {Company} — {Role} (#{num})
-
-**To:** {email or "No contact found — run `/career-ops contacto` first"}
-**Subject:** {subject line}
-**Days since application:** {N}
-**Follow-ups sent:** {N}
-**Channel:** Email / LinkedIn
-
-{draft text}
-```
-
-## Step 5 — Record Follow-ups
-
-After the user reviews and says they've sent a follow-up, record it:
-
-1. If `data/follow-ups.md` doesn't exist, create it:
-   ```markdown
-   # Follow-up History
-
-   | # | App# | Date | Company | Role | Channel | Contact | Notes |
-   |---|------|------|---------|------|---------|---------|-------|
-   ```
-
-2. Append a row with:
-   - `#` = next sequential number in the follow-ups table
-   - `App#` = application number from tracker
-   - `Date` = today's date
-   - `Company` = company name
-   - `Role` = role title
-   - `Channel` = Email / LinkedIn / Other
-   - `Contact` = who it was sent to
-   - `Notes` = brief note (e.g., "First follow-up, referenced Barbeiro.app")
-
-3. Optionally update the Notes column in `data/applications.md` with "Follow-up {N} sent {YYYY-MM-DD}"
-
-**IMPORTANT:** Only record follow-ups the user confirms they actually sent. Never record a draft as sent.
-
-## Step 6 — Summary
-
-After showing all drafts, summarize:
-
-> **Follow-up Dashboard** ({date})
-> - {N} applications being tracked
-> - {N} overdue — drafts generated above
-> - {N} urgent — respond today
-> - {N} waiting — next follow-up dates shown
-> - {N} cold — consider closing
->
-> Review the drafts above and tell me which ones you've sent so I can record them.
-
-## Cadence Rules Reference
-
-| Status | First follow-up | Subsequent | Max attempts |
-|--------|----------------|------------|-------------|
-| Applied | 7 days after application | Every 7 days | 2 (then mark cold) |
-| Responded | 1 day (urgent reply) | Every 3 days | No limit |
-| Interview | 1 day after (thank-you) | Every 3 days | No limit |
-
-These defaults can be overridden via `node followup-cadence.mjs --applied-days N`.
+| 状态 | 首次跟进 | 后续跟进 | 最大次数 |
+|------|---------|---------|---------|
+| 已投递 | 投递后7天 | 每7天 | 2次（然后标记已冷） |
+| 已回复 | 1天（紧急回复） | 每3天 | 不限 |
+| 面试中 | 面试后1天（感谢信） | 每3天 | 不限 |

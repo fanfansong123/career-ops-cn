@@ -1,105 +1,74 @@
-# Mode: batch — Mass Processing of Jobs
+# Mode: batch -- 批量处理
 
-Two usage modes: **conductor --chrome** (navigates portals in real time) or **standalone** (script for URLs already collected).
+两种使用模式：**conductor --chrome**（实时导航招聘平台）或 **standalone**（处理已收集的 URL）。
 
-## Architecture
+## 架构
 
 ```text
-Conductor (headed browser mode)
+Conductor（有头浏览器模式）
   │
-  │  Chrome: navigates portals (logged-in sessions)
-  │  Reads DOM directly — the user sees everything in real time
+  │  Chrome: 导航招聘平台（已登录会话）
+  │  直接读取 DOM — 用户实时看到一切
   │
-  ├─ Job 1: reads JD from DOM + URL
-  │    └─► headless worker → report .md + PDF + tracker-line
+  ├─ 岗位1: 从 DOM 读取 JD + URL
+  │    └─► headless worker → 报告 .md + PDF + 追踪行
   │
-  ├─ Job 2: click next, read JD + URL
-  │    └─► headless worker → report .md + PDF + tracker-line
+  ├─ 岗位2: 点击下一个，读取 JD + URL
+  │    └─► headless worker → 报告 .md + PDF + 追踪行
   │
-  └─ End: merge tracker-additions → applications.md + summary
+  └─ 结束: 合并 tracker-additions → applications.md + 摘要
 ```
 
-Each worker is a headless child process with a clean 200K token context. The conductor only orchestrates. See the **Headless / Batch Mode** table in `AGENTS.md` for the correct command per CLI.
+每个 worker 是独立的 headless 子进程，拥有干净的 200K token 上下文。conductor 只负责编排。
 
-## Files
+## 文件
 
 ```text
 batch/
-  batch-input.tsv               # URLs (from conductor or manual)
-  batch-state.tsv               # Progress (auto-generated, gitignored)
-  batch-runner.sh               # Standalone orchestrator script
-  batch-prompt.md               # Prompt template for workers
-  logs/                         # One log per job (gitignored)
-  tracker-additions/            # Tracker lines (gitignored)
+  batch-input.tsv               # URL（来自 conductor 或手动）
+  batch-state.tsv               # 进度（自动生成，gitignored）
+  batch-runner.sh               # Standalone 编排脚本
+  batch-prompt.md               # Worker 的 prompt 模板
+  logs/                         # 每个岗位一个日志（gitignored）
+  tracker-additions/            # 追踪行（gitignored）
 ```
 
 ## Mode A: Conductor --chrome
 
-1. **Read state**: `batch/batch-state.tsv` → identify what has already been processed
-2. **Navigate portal**: Chrome → search URL
-3. **Extract URLs**: Read results DOM → extract URL list → append to `batch-input.tsv`
-4. **For each pending URL**:
-   a. Chrome: click on the job → read JD text from the DOM
-   b. Save JD to `/tmp/batch-jd-{id}.txt`
-   c. Calculate next sequential REPORT_NUM
-   d. Execute via Bash:
+1. **读取状态**: `batch/batch-state.tsv` → 识别已处理的
+2. **导航平台**: Chrome → 搜索 URL
+3. **提取 URL**: 读取结果 DOM → 提取 URL 列表 → 追加到 batch-input.tsv
+4. **对每个待处理 URL**:
+   a. Chrome: 点击岗位 → 从 DOM 读取 JD 文本
+   b. 保存 JD 到 `/tmp/batch-jd-{id}.txt`
+   c. 计算下一个 REPORT_NUM
+   d. 通过 Bash 执行 worker
+   e. 更新 `batch-state.tsv`（completed/failed + score + report_num）
+   f. 记录日志到 `logs/{report_num}-{id}.log`
+   g. Chrome: 返回 → 下一个岗位
+5. **分页**: 如无更多岗位 → 点击"下一页" → 重复
+6. **结束**: 合并 tracker-additions → applications.md + 摘要
 
-      ```bash
-      # Use your CLI's headless command (see AGENTS.md — Headless / Batch Mode)
-      <headless-cmd> "Process this job. URL: {url}. JD: /tmp/batch-jd-{id}.txt. Report: {num}. ID: {id}"
-      ```
-
-   e. Update `batch-state.tsv` (completed/failed + score + report_num)
-   f. Log to `logs/{report_num}-{id}.log`
-   g. Chrome: go back → next job
-5. **Pagination**: If no more jobs → click "Next" → repeat
-6. **End**: Merge `tracker-additions/` → `applications.md` + summary
-
-## Mode B: Standalone script
+## Mode B: Standalone 脚本
 
 ```bash
 batch/batch-runner.sh [OPTIONS]
 ```
 
-Options:
-- `--dry-run` — list pending jobs without executing
-- `--retry-failed` — retry only failed jobs
-- `--start-from N` — start from ID N
-- `--parallel N` — N workers in parallel
-- `--max-retries N` — attempts per job (default: 2)
+选项：
+- `--dry-run` — 列出待处理岗位，不执行
+- `--retry-failed` — 仅重试失败的
+- `--start-from N` — 从 ID N 开始
+- `--parallel N` — N 个并行 worker
+- `--max-retries N` — 每个岗位重试次数（默认2）
 
-## batch-state.tsv Format
+## 错误处理
 
-```text
-id	url	status	started_at	completed_at	report_num	score	error	retries
-1	https://...	completed	2026-...	2026-...	002	4.2	-	0
-2	https://...	failed	2026-...	2026-...	-	-	Error msg	1
-3	https://...	pending	-	-	-	-	-	0
-```
-
-## Resumability
-
-- If it crashes → re-run → reads `batch-state.tsv` → skip completed jobs
-- Lock file (`batch-runner.pid`) prevents double execution
-- Each worker is independent: failure in job #47 does not affect the others
-
-## Workers (headless mode)
-
-Each worker receives `batch-prompt.md` as a system prompt. It is self-contained. Use your CLI's headless command — see the **Headless / Batch Mode** table in `AGENTS.md`.
-
-The worker produces:
-1. `.md` report in `reports/`
-2. PDF in `output/`
-3. Tracker line in `batch/tracker-additions/{id}.tsv`
-4. Result JSON via stdout
-
-## Error handling
-
-| Error | Recovery |
-|-------|----------|
-| URL inaccessible | Worker fails → conductor marks `failed`, continues |
-| JD behind login | Conductor attempts to read DOM. If it fails → `failed` |
-| Portal changes layout | Conductor reasons about HTML, adapts |
-| Worker crashes | Conductor marks `failed`, continues. Retry with `--retry-failed` |
-| Conductor crashes | Re-run → reads state → skip completed jobs |
-| PDF fails | .md report is saved. PDF remains pending |
+| 错误 | 恢复 |
+|------|------|
+| URL 不可访问 | Worker 失败 → conductor 标记 failed，继续 |
+| JD 需要登录 | Conductor 尝试读取 DOM，失败 → failed |
+| 平台布局变化 | Conductor 自适应 HTML |
+| Worker 崩溃 | Conductor 标记 failed，继续。使用 --retry-failed 重试 |
+| Conductor 崩溃 | 重新运行 → 读取状态 → 跳过已完成 |
+| PDF 失败 | .md 报告已保存，PDF 待生成 |

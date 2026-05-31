@@ -1,248 +1,207 @@
-# Mode: interview-prep — Company-Specific Interview Intelligence
+# Mode: interview-prep -- 公司专项面试准备
 
-When the user asks to prep for an interview at a specific company+role, or when an evaluation scores 4.0+ and the user updates status to `Interview`, run this mode.
+当用户要求准备某公司+岗位的面试时，或当评估评分 >= 4.0 且用户将状态更新为"面试中"时，运行此模式。
 
-## Inputs
+## 输入
 
-1. **Company name** and **role title** (required)
-2. **Evaluation report** in `reports/` (if exists) — read for archetype, gaps, matched proof points
-3. **Story bank** at `interview-prep/story-bank.md` — read for existing prepared stories
-4. **CV** at `cv.md` + `article-digest.md` — read for proof points
-5. **Profile** at `config/profile.yml` + `modes/_profile.md` — read for candidate context
+1. **公司名** 和 **岗位名称**（必填）
+2. **评估报告** 在 `reports/` 目录（如存在） — 读取岗位类型、差距、匹配的成果证明
+3. **故事库** 在 `interview-prep/story-bank.md` — 读取已准备的现有故事
+4. **简历** 在 `cv.md` + `article-digest.md` — 读取成果证明
+5. **用户配置** 在 `config/profile.yml` + `modes/_profile.md` — 读取候选人背景
 
-## Step 1 — Research
+## Step 1 — 调研
 
-Run these WebSearch queries. Extract structured data, not summaries. Cite sources for every claim.
+运行以下 WebSearch 查询。提取结构化数据而非摘要。每个论断标注来源。
 
-The first round of most processes is a recruiter / HR screen, not a technical panel — so research has to cover both. Group queries by the audience they inform:
+### HR 面 / 第一轮筛选
 
-**Recruiter / HR screen** (early-round fit, comp, logistics):
+| 查询 | 提取内容 |
+|------|----------|
+| `"{公司} {岗位} 薪资" site:maimai.cn` 和 `"{公司} {岗位} offer" site:nowcoder.com` | 薪资范围（base/年终/期权）按级别 |
+| `"{公司} 面试流程 面经" site:nowcoder.com` | 流程时间线、筛选标准、常见HR问题 |
+| `"{公司} 年终奖" OR "薪资结构"` | 年终计算方式、发放时间、去年情况 |
+| `"{公司} 福利" OR "五险一金"` | 福利详情、公积金比例、试用期政策 |
 
-| Query | What to extract |
-|-------|-----------------|
-| `"{company} {role} salary" site:levels.fyi` and `"{company} {role} salary" site:glassdoor.com/Salary` (run both — `OR` inside a quoted phrase is taken literally by most engines) | Comp ranges (base / equity / bonus) by level |
-| `"{company} interview process site:glassdoor.com"` then manually filter retrieved reviews to those describing the recruiter / HR screen | Process timeline, screening criteria, common screening questions, recruiter behavior |
-| `"{company} site:teamblind.com" comp negotiation OR offer` | Candid comp/leverage details, what recruiters push back on |
-| `"{company} careers"` + `"{company} benefits"` | Official comp/benefits framing, work-auth/visa policy, location policy |
+### 技术面 / 招聘经理
 
-**Hiring manager / leadership** (motivation, scope alignment, team fit):
+| 查询 | 提取内容 |
+|------|----------|
+| `"{公司} 技术博客"` 和 `"{公司} {团队} 技术"` | 团队近期工作、技术优先级、公开挑战 |
+| `"{公司}" 新闻 OR 产品 OR 发布`（最近12个月） | 近期里程碑、公开动向、招聘驱动因素 |
+| `"{公司} {岗位} 面试" site:zhihu.com` | 面试官轮次结构、考察重点、候选人分享 |
 
-| Query | What to extract |
-|-------|-----------------|
-| `"{company} engineering blog"` and `"{company} {team} blog"` | Team's recent work, technical priorities, named challenges |
-| `"{company}" news OR launch OR roadmap` (last 12 months) | Recent milestones, public bets, hiring drivers |
-| `"{company} {role} interview process"` (general) | Hiring-manager round structure, what they evaluate, candidate write-ups |
+### 技术深度 / 同事面
 
-**Peer / technical panel** (depth, collaboration, on-the-job realism):
+| 查询 | 提取内容 |
+|------|----------|
+| `"{公司} {岗位} 面试题" site:nowcoder.com` | 实际考题、难度评分、面试体验、通过/拒绝比例 |
+| `"{公司} 面试 算法" OR "系统设计" site:blog.csdn.net` | 具体编码/技术题、系统设计话题、轮次结构 |
+| `"{公司} 面试" site:xiaohongshu.com` | 近期面试数据点、公司面试风格 |
+| `"{公司} {岗位} 技术面" site:maimai.cn` | 面试bar、技术深度要求 |
 
-| Query | What to extract |
-|-------|-----------------|
-| `"{company} {role} interview questions site:glassdoor.com"` | Actual questions asked, difficulty rating, experience rating, number of rounds, offer/reject ratio |
-| `"{company} {role} interview site:leetcode.com/discuss"` | Specific coding/technical problems, system design topics, round structure |
-| `"{company} interview process site:teamblind.com"` then manually filter retrieved threads to those describing technical rounds | Hiring bar, recent technical interview data points |
+如果公司较小或不知名导致搜索结果少，扩大搜索范围：搜索同阶段公司的同类型岗位。即使信息稀少也要做 HR 面查询 — 薪资/福利数据对大多数公司都可查。
 
-If the company is small or obscure and yields few results, broaden: search for the role archetype at similar-stage companies, and note that intel is sparse. Do the recruiter-screen queries even when intel is sparse — comp/logistics data exists for almost every company.
+**绝不编造面试题。** 如果来源说"他们问了分布式系统相关"，就报告这个。不要编造一个具体的分布式系统问题。当从 JD 分析推断可能的问题时，明确标注为 `[从JD推断]`。
 
-**Do NOT fabricate questions.** If a source says "they asked about distributed systems," report that. Do not invent a specific distributed systems question. When generating likely questions from JD analysis, label them clearly as `[inferred from JD]` not sourced from candidates.
-
-**Tag conventions** (don't mix them):
-
-- `[inferred from JD]` — questions derived from the job description rather than a candidate report.
-- `[inferred]` — audience classifications (Step 2.5) made from round duration / position when `Conducted by` is unknown.
-
-## Step 2 — Process Overview
+## Step 2 — 面试流程概览
 
 ```markdown
-## Process Overview
-- **Rounds:** {N} rounds, ~{X} days end-to-end
-- **Format:** {e.g., recruiter screen → technical phone → take-home → onsite (4 rounds) → hiring manager}
-- **Difficulty:** {X}/5 (Glassdoor avg, N reviews)
-- **Positive experience rate:** {X}%
-- **Known quirks:** {e.g., "pair programming instead of whiteboard", "no LeetCode, all practical", "take-home is 4 hours"}
-- **Sources:** {links}
+## 面试流程概览
+- **轮次:** {N} 轮，约 {X} 天完成
+- **形式:** {如：HR筛选 → 技术电面 → 现场/视频（3轮）→ 招聘经理}
+- **难度:** {X}/5（牛客/脉脉评价，N 条评价）
+- **正面体验率:** {X}%
+- **已知特点:** {如："有手写代码环节"、"无LeetCode全是实践题"、"系统设计比重高"}
+- **来源:** {链接}
 ```
 
-If data is insufficient for any field, write "unknown — not enough data" rather than guessing.
+如果某字段数据不足，写"未知 — 数据不足"而非猜测。
 
-## Step 2.5 — Audience Map
+## Step 3 — 各轮次详解
 
-Classify each round from Step 2 into exactly one audience. The audience drives what gets prioritized in Steps 4 and 7.
-
-| Audience            | Typical round                                | Primary evaluation                                              |
-|---------------------|----------------------------------------------|-----------------------------------------------------------------|
-| `recruiter-screen`  | First call (15–30 min, recruiter / HR / TA)  | Fit gate: motivation, comp, location/visa, timeline             |
-| `hiring-manager`    | Manager / skip-level (30–45 min)             | Why this role, scope alignment, leadership signals              |
-| `peer-tech`         | IC technical (live coding, system design, take-home review) | Depth + collaboration on the actual stack                       |
-| `panel-mixed`       | Onsite / loop with multiple interviewer types in one block  | Cross-cuts the above                                            |
-
-If `Conducted by` is unknown for a round, infer cautiously from duration, position, and any signals from the JD or job posting. Common patterns:
-
-- Round 1, short (15–30 min) → almost always `recruiter-screen`.
-- Round 2 — **do not default**. Many companies put a peer-led technical phone screen here, others put the hiring manager. Prefer `peer-tech` if the round is described as "technical screen" or has a coding/system-design component; prefer `hiring-manager` if it's described as a manager / skip-level / leadership conversation; otherwise mark as `panel-mixed [inferred]` and prep both packs.
-- Deep technical block (live coding, system design, take-home review) → `peer-tech`.
-- Onsite / loop with multiple back-to-back rounds → `panel-mixed`.
-
-Mark inferred audiences with `[inferred]` and keep going — sparse intel is normal early in research.
+对调研发现的每一轮：
 
 ```markdown
-## Audience Map
-- **Round 1** (recruiter screen, 30 min) → `recruiter-screen`
-- **Round 2** (technical phone screen, 60 min) → `peer-tech`
-- **Round 3** (hiring manager call, 45 min) → `hiring-manager`
-- **Round 4** (onsite loop, 4× 45 min) → `panel-mixed`
-- ...
+### 第 {N} 轮: {类型} — 面试官: {HR/同事/经理/总监}
+- **时长:** {X} 分钟
+- **面试官:** {同事 / 经理 / 跨级 / HR — 如已知}
+- **考察内容:** {具体技能或特质}
+- **已知面试题:**
+  - {题目} — [来源: 牛客网 (URL/日期)]
+  - {题目} — [来源: 脉脉 (URL/日期)]
+- **如何准备:** {1-2 条具体行动建议}
 ```
 
-The example above shows a typical pattern but is not a default. Classify each round from the actual research above — round 2 in particular is often `peer-tech`, not `hiring-manager`.
+## Step 4 — 按环节准备
 
-## Step 3 — Round-by-Round Breakdown
+### HR 面准备
 
-For each round discovered in research:
+HR 筛选的是匹配度而非技术能力。回答模糊（薪资含糊、动机不清、基本信息缺失）会在收集到任何技术信号之前结束流程。至少覆盖：
+
+- **"介绍一下你自己 / 为什么看机会？"** — 60-90秒叙事，锚定到 `_profile.md` 叙事 + 岗位类型
+- **薪资期望** — 基于调研的具体范围，锚定到 profile.yml 的期望范围
+- **为什么选择我们公司** — 2-3句引用调研中发现的公开信息（近期产品、技术方向）
+- **地点 / 远程 / 通勤** — 来自 profile.yml 的地点偏好
+- **可到岗时间 / 离职期** — 具体数字
+- **其他在面流程** — 建议的措辞框架，不推候选人撒谎
+- **背景疑点** — 如果有经历空白期、转行等，准备诚实、具体、向前看的解释
+
+### 技术面准备
+
+#### 计算机基础（八股文）
+
+根据 JD 技术栈列出需要复习的基础知识点：
 
 ```markdown
-### Round {N}: {Type} — audience: `{audience}`
-- **Duration:** {X} min
-- **Conducted by:** {peer / manager / skip-level / recruiter — if known}
-- **What they evaluate:** {specific skills or traits}
-- **Reported questions:**
-  - {question} — [source: Glassdoor (URL/date)]
-  - {question} — [source: Blind (URL/date)]
-- **How to prepare:** {1-2 concrete actions, audience-appropriate — see Step 4 for the full per-audience pack}
+- [ ] {知识点} — 原因: "{JD明确要求的技能}"
+- [ ] {知识点} — 原因: "{牛客/脉脉面经提到}"
+- [ ] {知识点} — 原因: "{该岗位常见考点}"
 ```
 
-If round structure is unknown, state that and provide the best available intel on what types of rounds to expect based on company size, stage, and role level.
+**常见分类：**
+- **编程语言**: Go并发模型、Java JVM、Python GIL
+- **数据库**: MySQL索引优化、事务隔离级别、慢查询分析
+- **缓存**: Redis数据结构、缓存穿透/击穿/雪崩、分布式锁
+- **消息队列**: Kafka/RocketMQ 原理、消息可靠性
+- **操作系统**: 进程线程、内存管理、IO多路复用
+- **网络**: TCP/IP、HTTP/HTTPS、DNS、负载均衡
+- **分布式**: CAP理论、一致性协议、分布式事务
 
-## Step 4 — Likely Questions (per audience)
+#### 算法刷题准备
 
-Group all discovered and inferred questions by the audience that asks them, not by question type. Within each audience, draft candidate-specific answers using `cv.md`, `article-digest.md`, `config/profile.yml`, and `modes/_profile.md`. **Never fabricate questions** — sourced questions must cite, inferred questions must be tagged `[inferred from JD]`.
+根据公司类型建议刷题策略：
 
-If any of those profile files are missing, incomplete, or out-of-date, note the gap inline (e.g. "comp target unknown — defer to recruiter band") and proceed with what's available rather than blocking the prep. The mode's value is partial-but-honest output, not perfect-or-nothing.
+| 公司 | 难度 | 重点 |
+|------|------|------|
+| 字节跳动 | 中-难 | 动态规划、二叉树、字符串 |
+| 阿里巴巴 | 中-难 | 设计题、场景题 |
+| 腾讯 | 中 | 链表、二叉树、排序 |
+| 美团 | 中 | 工程实践、场景设计 |
+| 外企（微软/Google） | 中-难（LeetCode） | 全面覆盖 |
+| 其他 | 中 | 基础题型 |
 
-### Audience: `recruiter-screen`
+该岗位在牛客网上的常见题型标签：
+（从调研结果中提取）
 
-The recruiter is screening for fit, not testing skill. Wrong-foot answers (vague comp, fuzzy motivation, missing logistics) end the process before any technical signal is collected. Cover at minimum:
+#### 项目深挖
 
-- **"Walk me through your CV / why are you looking?"** — 60–90s narrative anchored to `modes/_profile.md` narrative + the role's archetype.
-- **Comp expectation** — concrete range pulled from Step 1 Levels.fyi/Glassdoor data, anchored to `config/profile.yml` `compensation.target`. Note the leverage hand: if comp data is thin or the candidate has no competing offer, recommend deferring with a clean script ("I'm calibrating to market for {level}, can you share the band for this role?").
-- **Why this company** — 2–3 sentences referencing public signals from Step 1 (recent launch, named values, team work). Avoid generic praise.
-- **Location / remote / visa** — answer derived from `config/profile.yml` location policy and the role's posted policy. Flag deal-breakers from `modes/_profile.md` so the recruiter can route correctly.
-- **Timeline / availability / notice period** — numbers, not vibes.
-- **Other processes in flight** — recommended framing only; never push the candidate to lie.
-- **Background red flags** — gaps, transitions, unusual elements from `cv.md` + `_profile.md`. Honest, specific, forward-looking framing — never defensive.
+每个核心项目准备 3-5 分钟深入介绍：
+- 架构图（口述即可）
+- 关键技术决策 + 为什么这样做
+- 量化结果
+- 踩过的坑和解决方案
 
-### Audience: `hiring-manager`
+#### 系统设计（如适用）
 
-The HM is screening for motivation + scope fit. They've already trusted the recruiter's logistics gate; they care whether you'd own the work. Cover at minimum:
+列出 2-3 道最可能考察的设计题：
+```markdown
+- {设计题} — 原因: "{与该岗位相关}"
+- {设计题} — 原因: "{与该公司业务相关}"
+```
 
-- **"Why this role, why now?"** — connect candidate's last 1–2 roles + `_profile.md` narrative to the team's named challenge from Step 1.
-- **"What would your first 90 days look like here?"** — derived from JD scope + the team's recent work (engineering blog, public roadmap).
-- **Leadership / collaboration questions** — map to `interview-prep/story-bank.md`.
-- **Sharp questions to ask back** — 2–3 tied to a specific recent thing the team shipped or wrote about, not generic "what's the team like".
+### 招聘经理面准备
 
-### Audience: `peer-tech`
+- **"为什么是这个岗位，为什么是现在？"** — 将最近经历 + 个人叙事连接到团队的公开挑战
+- **"前90天你会怎么做？"** — 从 JD 范围 + 团队近期工作推导
+- **反问准备** — 2-3 个与团队具体工作相关的问题（不是"团队氛围怎么样"这种）
 
-This is where the original Technical / Role-Specific buckets live. Peers are evaluating depth and collaboration on the actual stack.
+### HR 终面准备
 
-- **Technical questions** (system design, coding, architecture, domain) — for each: the question, source, and what a strong answer looks like for this candidate specifically (reference CV proof points).
-- **Role-specific questions** tied to the JD archetype — for each: the question, why they're likely asking it (which JD requirement it maps to), and the candidate's best angle.
-- **Reverse questions** — about on-call, code review culture, deployment cadence, what surprised them when they joined.
+- 离职原因话术（积极、向前看）
+- 薪资预期沟通策略
+- 入职时间谈判
+- 反问：培训体系、晋升机制、团队结构
 
-### Audience: `panel-mixed`
+## Step 5 — 故事库映射
 
-Onsite loops and mixed panels rarely give the candidate time to context-switch — preparation has to be pre-routed. For each panel slot:
+| # | 环节 | 可能的题目 | 最佳故事（来自story-bank） | 匹配度 | 缺口？ |
+|---|------|-----------|--------------------------|--------|--------|
+| 1 | HR面 | ... | [故事标题] | 强/部分/无 | |
+| 2 | 技术面 | ... | [故事标题] | 强/部分/无 | |
+| 3 | 经理面 | ... | [故事标题] | 强/部分/无 | |
 
-- **If the interviewer is named in the schedule**, do a quick LinkedIn/blog look-up and tag them to one of the three audiences (recruiter / HM / peer-tech). Then pull from that audience's pack.
-- **If the slot is unlabeled**, prep all three packs but cap each to 3–5 highest-priority items so the candidate isn't drowning in notes.
-- **Hand-off discipline**: tell the candidate explicitly what NOT to repeat verbatim across slots (e.g. the same proof point told identically twice signals scripted answers; vary the angle).
-- **Energy management**: 4-hour onsites burn out less-experienced candidates first. Flag the slot most likely to test depth (usually peer-tech) and reserve the candidate's freshest material for it.
+- **强**: 故事直接回答问题
+- **部分**: 故事相关但需调整框架
+- **无**: 没有现有故事 — 标记给用户
 
-## Step 5 — Story Bank Mapping
+对每个缺口建议："你需要一个关于 {主题} 的故事。考虑：{cv.md 中可成为 STAR+R 故事的具体经历}。"
 
-Run this mapping **per audience pack** from Step 4 — same story can map differently to a recruiter prompt vs a peer-tech behavioral question, and a single un-segmented table risks cross-audience drift.
+## Step 6 — 公司信号
 
-| # | Audience | Likely question/topic | Best story from story-bank.md | Fit | Gap? |
-|---|----------|----------------------|-------------------------------|-----|------|
-| 1 | recruiter-screen | ... | [Story Title] | strong/partial/none | |
-| 2 | hiring-manager | ... | [Story Title] | strong/partial/none | |
-| 3 | peer-tech | ... | [Story Title] | strong/partial/none | |
+### 应该主动展示的
+- 与 JD 要求直接对齐的经历和成果
+- 对公司业务/技术方向的具体了解
+- 你带来的独特视角或经验
 
-- **strong**: story directly answers the question
-- **partial**: story is adjacent, needs reframing
-- **none**: no existing story — flag for the user
+### 应该避免的
+- 吐槽前公司/前同事
+- 薪资先开口给出具体数字（让对方先报范围）
+- 对该公司的负面新闻发表看法
 
-For each gap, suggest: "You need a story about {topic}. Consider: {specific experience from cv.md that could become a STAR+R story}."
+### 反问建议
+- 问具体的技术挑战、团队结构、开发流程
+- 不问"公司文化怎么样"（太泛，显得没做功课）
+- 不问官网上能查到的信息
 
-If the user wants to draft missing stories, help them build STAR+R format and append to `interview-prep/story-bank.md`.
+## 输出
 
-## Step 6 — Technical Prep Checklist
-
-Based on what the company actually tests, not generic advice:
+将完整报告保存到 `interview-prep/{company-slug}-{role-slug}.md`，格式：
 
 ```markdown
-- [ ] {topic} — why: "{evidence from research}"
-- [ ] {topic} — why: "{their blog/product suggests this matters}"
-- [ ] {topic} — why: "{asked in N/M recent Glassdoor reviews}"
+# 面试准备: {公司} — {岗位}
+
+**链接:** {JD链接或 N/A}
+**真实性:** {从评估报告的Block G复制，或 "未知"}
+**报告:** {评估报告链接，或 "N/A"}
+**调研日期:** {YYYY-MM-DD}
+**来源:** {N} 条牛客面经, {N} 条脉脉, {N} 条其他
 ```
 
-Prioritize by frequency and relevance to the role. Max 10 items.
+## 规则
 
-## Step 7 — Company Signals (per audience)
-
-Things to say, do, and avoid — segmented by who's listening. The same fact can be a strength to a peer engineer and a yellow flag to a recruiter; framing matters.
-
-### To the recruiter / HR screen
-
-- **What to volunteer**: motivation, location/visa fit, timeline, why this company.
-- **What NOT to volunteer**: hard comp number when leverage is uncertain (defer to band); ongoing process details; opinions on the company's recent layoffs / press.
-- **Vocabulary**: official company language for benefits and policies (from careers page).
-- **Red flags they screen for**: visa surprises, comp mismatch, "looking everywhere" energy.
-
-### To the hiring manager
-
-- **What to lead with**: connection between candidate narrative (`_profile.md`) and a named team challenge from Step 1.
-- **Vocabulary to use**: terms the company uses internally — shows homework (e.g., Stripe says "increase the GDP of the internet", Anthropic says "safety" not "alignment").
-- **Sharp questions to ask back**: 2–3 tied to recent news / blog posts from Step 1.
-
-### To the peer / technical panel
-
-- **What to lead with**: stack-relevant proof points from `cv.md` / `article-digest.md`.
-- **Things to avoid**: anti-patterns flagged in Glassdoor / Blind reviews specific to this company.
-- **Reverse questions**: on-call rotation, code review norms, deployment cadence, what surprised them when they joined.
-
-### To a mixed panel
-
-- **What to lead with**: a single 2-sentence framing that lands for all three audiences — usually narrative + named team challenge — then let each interviewer steer.
-- **What NOT to repeat**: same proof point told identically across slots; instead, vary the angle (recruiter hears the headline number, HM hears the team-impact framing, peer-tech hears the technical detail).
-- **Vocabulary**: keep recruiter-friendly language (impact, scope) when leadership is in the room; switch to peer-language (architecture, trade-offs, on-call) when only ICs are.
-- **What to avoid**: contradicting yourself across slots about comp, timeline, or what excites you. Interviewers compare notes.
-
-## Output
-
-Save the full report to `interview-prep/{company-slug}-{role-slug}.md` with this header:
-
-```markdown
-# Interview Intel: {Company} — {Role}
-
-**URL:** {job posting URL or company careers URL, or "N/A" if recruiter-sourced}
-**Legitimacy:** {tier copied from the evaluation report's Block G, or "unknown" if no report exists}
-**Report:** {link to evaluation report if exists, or "N/A"}
-**Researched:** {YYYY-MM-DD}
-**Sources:** {N} Glassdoor reviews, {N} Blind posts, {N} other
-**Audiences covered:** {recruiter-screen, hiring-manager, peer-tech, panel-mixed}
-```
-
-## Post-Research
-
-After delivering the report:
-
-1. Ask the user if they want to draft stories for any gaps found in Step 5
-2. If they have a scheduled interview date, note it: "Your interview is in {X} days. Want me to set a reminder to review this prep?"
-3. Suggest running `deep` mode if the company research in Step 1 was thin — deep mode covers strategy, culture, and competitive landscape in more depth
-
-## Rules
-
-- **NEVER invent interview questions and attribute them to sources.** Inferred questions must be labeled `[inferred from JD]`.
-- **NEVER fabricate Glassdoor ratings or statistics.** If the data isn't there, say so.
-- **Cite everything.** Every question, every stat, every claim gets a source or an `[inferred]` tag.
-- Generate in the language of the JD (EN default).
-- Be direct. This is a working prep document, not a pep talk.
+- **绝不编造面试题并嫁祸来源。** 推断的题目必须标注 `[从JD推断]`。
+- **绝不编造评分或统计。** 如果没有数据，直说。
+- **所有内容标注来源。** 每个题目、每个统计、每个论断都有来源或 `[推断]` 标签。
+- 以 JD 语言生成（中文 JD → 中文输出）。
+- 直接、可操作。这是工作文档，不是打气话。

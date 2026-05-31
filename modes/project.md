@@ -1,33 +1,33 @@
-# Mode: project — Portfolio Project Evaluation
+# Mode: project -- 作品集项目评估
 
-**URL:** {project-url}
-**Legitimacy:** {High Confidence | Proceed with Caution | Suspicious}
+**链接:** {project-url}
+**真实性:** {高置信度 | 谨慎对待 | 可疑}
 
-Scoring matrix with 6 dimensions (1–5):
+6 维度评分矩阵（1-5）：
 
-| Dimension | Weight | 5 = ... | 1 = ... |
-|-----------|------|---------|---------|
-| Signal for target roles | 25% | Directly demonstrates JD skill | Not related |
-| Uniqueness | 20% | Nobody has done this | Very common |
-| Demo ability | 20% | Live demo in 2 min | Code only, not visual |
-| Metrics potential | 15% | Clear metrics (latency, cost, accuracy) | No metrics possible |
-| Time to MVP | 10% | 1 week | 3+ months |
-| STAR story potential | 10% | Rich story with trade-offs | Implementation only |
+| 维度 | 权重 | 5 = ... | 1 = ... |
+|------|------|---------|---------|
+| 对目标岗位的信号 | 25% | 直接展示 JD 技能 | 无关 |
+| 独特性 | 20% | 几乎没人做过 | 非常常见 |
+| 可演示性 | 20% | 2分钟现场演示 | 只有代码，不直观 |
+| 量化潜力 | 15% | 清晰的量化指标 | 无法量化 |
+| MVP 时间 | 10% | 1周 | 3个月+ |
+| STAR 故事潜力 | 10% | 丰富的决策与权衡故事 | 只有实现细节 |
 
-## "Interview Pack" Requirements
+## "面试包"要求
 
-For each approved project:
-1. **One-pager**: product + architecture + metrics + evaluation plan
-2. **Demo**: live URL or 2 min recorded walkthrough
-3. **Postmortem**: what worked, what didn’t, mitigations
+对每个通过的项目：
+1. **一页纸**: 产品 + 架构 + 指标 + 评估方案
+2. **演示**: 在线 URL 或 2分钟录屏
+3. **复盘**: 什么做对了、什么做错了、如何改进
 
-## 80/20 Plan
+## 80/20 计划
 
-- Week 1 → MVP with core metric
-- Week 2 → polish + interview pack
+- 第1周 → MVP + 核心指标
+- 第2周 → 打磨 + 面试包
 
-## Verdicts
+## 结论
 
-- **BUILD** → plan with weekly milestones
-- **SKIP** → why and what to do instead
-- **PIVOT TO [alternative]** → more impactful variant
+- **值得做** → 含每周里程碑的计划
+- **跳过** → 原因及替代建议
+- **转向 [替代方案]** → 更有影响力的变体

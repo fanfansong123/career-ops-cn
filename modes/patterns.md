@@ -1,154 +1,70 @@
-# Mode: patterns -- Rejection Pattern Detector
+# Mode: patterns -- 被拒规律分析
 
-## Purpose
+## 目的
 
-Analyze all tracked applications to find patterns in outcomes and surface actionable insights. Identifies what's working (archetypes, remote policies, score ranges) and what's wasting time (geo-restricted roles, stack mismatches, low-score applications).
+分析所有已追踪的投递，寻找结果中的规律，发现可操作的洞察。识别什么在起作用（岗位类型、远程政策、评分区间）以及什么在浪费时间（地点限制、技术栈不匹配、低分投递）。
 
-## Inputs
+## 最低门槛
 
-- `data/applications.md` — Application tracker
-- `reports/` — Individual evaluation reports
-- `config/profile.yml` — User profile (for recommendation context)
-- `modes/_profile.md` — User archetypes and framing
-- `portals.yml` — Portal config (for filter update recommendations)
+运行分析前检查：`data/applications.md` 是否有至少 5 条记录状态已超出"已评估"（即已投递、已回复、面试、Offer、被拒、已放弃、不建议投）？
 
-## Minimum Threshold
+如果没有，告诉用户：
+> "数据还不够 — {N}/5 个投递已有后续结果。继续投递，有更多结果后再来分析。"
 
-Before running analysis, check: does `data/applications.md` have at least 5 entries with status beyond "Evaluated" (i.e., Applied, Responded, Interview, Offer, Rejected, Discarded, SKIP)?
-
-If not, tell the user:
-> "Not enough data yet -- {N}/5 applications have progressed beyond evaluation. Keep applying and come back when you have more outcomes to analyze."
-
-Exit gracefully.
-
-## Step 1 — Run Analysis Script
-
-Execute:
+## Step 1 — 运行分析脚本
 
 ```bash
 node analyze-patterns.mjs
 ```
 
-Parse the JSON output. It contains:
+解析 JSON 输出。
 
-| Key | Contents |
-|-----|----------|
-| `metadata` | Total entries, date range, analysis date, counts by outcome |
-| `funnel` | Count per status stage (evaluated, applied, interview, offer, etc.) |
-| `scoreComparison` | Avg/min/max score per outcome group (positive, negative, self_filtered, pending) |
-| `archetypeBreakdown` | Per-archetype: total, positive, negative, self_filtered, conversion rate |
-| `blockerAnalysis` | Most frequent hard blockers: geo-restriction, stack-mismatch, seniority, onsite |
-| `remotePolicy` | Per-policy bucket: total, positive, negative, conversion rate |
-| `companySizeBreakdown` | Per-size bucket: startup, scaleup, enterprise |
-| `scoreThreshold` | Recommended minimum score + reasoning |
-| `techStackGaps` | Most frequent tech gaps in negative outcomes |
-| `recommendations` | Top 5 actionable items with reasoning and impact level |
+## Step 2 — 生成报告
 
-If the script returns `error`, display the error message and exit.
+将报告写入 `reports/pattern-analysis-{YYYY-MM-DD}.md`。
 
-## Step 2 — Generate Report
-
-Write the report to `reports/pattern-analysis-{YYYY-MM-DD}.md`.
-
-### Report Structure
+### 报告结构
 
 ```markdown
-# Pattern Analysis -- {YYYY-MM-DD}
+# 规律分析 -- {YYYY-MM-DD}
 
-**Applications analyzed:** {total}
-**Date range:** {from} to {to}
-**Outcomes:** {positive} positive, {negative} negative, {self_filtered} self-filtered, {pending} pending
+**分析投递数:** {total}
+**日期范围:** {from} 至 {to}
+**结果:** {positive} 正向, {negative} 负向, {self_filtered} 自过滤, {pending} 待定
 
 ---
 
-## Conversion Funnel
+## 转化漏斗
+按状态展示数量和占比
 
-Show each status with count and percentage of total. Use a simple table:
+## 评分 vs 结果
+按结果分组展示平均/最低/最高评分
 
-| Stage | Count | % |
-|-------|-------|---|
-| Evaluated | X | X% |
-| Applied | X | X% |
-| ... | | |
+## 岗位类型表现
+每种类型的总投递、正向结果、转化率。突出最佳和最差类型。
 
-## Score vs Outcome
+## 主要障碍
+常见障碍的频率表（地点限制、技术栈不匹配等）
 
-| Outcome | Avg Score | Min | Max | Count |
-|---------|-----------|-----|-----|-------|
-| Positive | X.X/5 | X.X | X.X | X |
-| Negative | ... | | | |
-| Self-filtered | ... | | | |
-| Pending | ... | | | |
+## 远程/地点政策规律
+按政策分组的转化率
 
-## Archetype Performance
+## 技术栈差距
+负向/自过滤结果中最常见缺失技能及频率
 
-Table with each archetype, total applications, positive outcomes, conversion rate.
-Highlight the best-performing archetype and the worst.
+## 建议评分阈值
+基于数据的建议最低评分及理由
 
-## Top Blockers
-
-Frequency table of recurring hard blockers (geo-restriction, stack-mismatch, etc.).
-Note the percentage of all applications affected by each.
-
-## Remote Policy Patterns
-
-Table showing conversion rate by remote policy bucket (global, regional, geo-restricted, hybrid/onsite).
-
-## Tech Stack Gaps
-
-List of most common missing skills in negative/self-filtered outcomes with frequency.
-
-## Recommended Score Threshold
-
-State the data-driven minimum score and reasoning.
-
-## Recommendations
-
-Number the top recommendations (from the script output). For each:
-1. **[IMPACT]** Action to take
-   Reasoning behind the recommendation.
+## 建议
+排名前5的可操作建议，含理由和影响级别
 ```
 
-## Step 3 — Present Summary
+## Step 3 — 展示摘要
 
-Show the user a condensed version with:
-1. One-line stat summary (X applications, Y% applied, Z% positive outcome)
-2. Top 3 findings (most impactful patterns)
-3. Link to full report
+1. 一行统计摘要（X个投递，Y%已投递，Z%正向结果）
+2. 前3大发现（最有影响力的规律）
+3. 完整报告链接
 
-Example:
-> **Pattern Analysis Complete** (24 applications, Apr 7-8)
->
-> Key findings:
-> - Geo-restricted roles are 0% conversion (7 of 24) -- stop evaluating US/Canada-only postings
-> - Regional/global remote roles convert at 57-67% -- these are your sweet spot
-> - No positive outcomes below 4.2/5 -- consider this your score floor
->
-> Full report: `reports/pattern-analysis-2026-04-08.md`
+## Step 4 — 询问是否执行建议
 
-## Step 4 — Offer to Apply Recommendations
-
-Ask the user if they want to act on any recommendations:
-
-> "Want me to apply any of these recommendations? I can:
-> - Update `portals.yml` to filter out geo-restricted roles
-> - Set a score threshold in `_profile.md` for PDF generation
-> - Adjust archetype targeting based on what's converting
->
-> Just say which ones, or 'all' to apply everything."
-
-If the user agrees:
-- For portal filter changes: edit `portals.yml`
-- For profile/archetype changes: edit `modes/_profile.md` (NEVER `_shared.md`)
-- For score threshold: add to `config/profile.yml` under a `patterns` key
-
-## Outcome Classification
-
-For reference, outcomes are classified as:
-
-| Status | Outcome |
-|--------|---------|
-| Interview, Offer, Responded, Applied | **Positive** (invested effort or got traction) |
-| Rejected, Discarded | **Negative** (company said no or offer closed) |
-| SKIP, NO APLICAR | **Self-filtered** (user decided not to apply) |
-| Evaluated | **Pending** (no action taken yet) |
+> "要我执行这些建议吗？我可以：更新 portals.yml 过滤条件、在 _profile.md 中设置评分阈值、根据转化率调整岗位类型目标。"

@@ -1,7 +1,7 @@
 {
-  "name": "career-ops",
-  "version": "1.8.1",
-  "description": "AI-powered job search pipeline built on Claude Code",
+  "name": "career-ops-cn",
+  "version": "0.1.0",
+  "description": "AI求职指挥中心 — 基于 Claude Code 的智能求职系统，适配国内招聘环境",
   "scripts": {
     "doctor": "node doctor.mjs",
     "verify": "node verify-pipeline.mjs",
@@ -9,12 +9,16 @@
     "dedup": "node dedup-tracker.mjs",
     "merge": "node merge-tracker.mjs",
     "pdf": "node generate-pdf.mjs",
+    "pdf:tailor": "node generate-tailored-pdf.mjs",
     "sync-check": "node cv-sync-check.mjs",
     "update:check": "node update-system.mjs check",
     "update": "node update-system.mjs apply",
     "rollback": "node update-system.mjs rollback",
     "liveness": "node check-liveness.mjs",
     "scan": "node scan.mjs",
+    "scan-jobs": "node scan-jobs.mjs --output md",
+    "scan-jobs:part-time": "node scan-jobs.mjs --keyword \"Go 兼职\" --output md",
+    "scan-jobs:remote": "node scan-jobs.mjs --keyword \"Golang 远程\" --output md",
     "patterns": "node analyze-patterns.mjs",
     "gemini:eval": "node gemini-eval.mjs"
   },

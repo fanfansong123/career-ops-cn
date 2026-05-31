@@ -1,7 +1,7 @@
 {
   "name": "career-ops",
   "version": "1.6.0",
-  "description": "AI job search command center — evaluate offers, generate CVs, scan portals, track applications",
+  "description": "AI求职指挥中心 — 评估岗位、生成中文简历、扫描国内招聘平台、追踪投递进度",
   "author": {
     "name": "santifer",
     "url": "https://santifer.io"

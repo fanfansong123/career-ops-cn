@@ -1,27 +1,27 @@
-# Modo: training — Evaluación de Formación
+# Mode: training -- 培训/证书评估
 
-Para cada curso/cert que el candidato pregunte, evaluar 6 dimensiones:
+对候选人询问的每个课程/证书，评估 6 个维度：
 
-| Dimensión | Qué evalúa |
-|-----------|------------|
-| Alineación North Star | ¿Acerca o aleja del objetivo? |
-| Señal recruiter | ¿Qué piensan HMs al ver esto en un CV? |
-| Tiempo y esfuerzo | Semanas × horas/semana |
-| Coste de oportunidad | ¿Qué no puede hacer durante ese tiempo? |
-| Riesgos | ¿Contenido outdated? ¿Brand débil? ¿Demasiado básico? |
-| Entregable portfolio | ¿Produce un artefacto demostrable? |
+| 维度 | 评估内容 |
+|------|----------|
+| 北极星对齐 | 离目标岗位更近还是更远？ |
+| HR 信号 | 招聘经理/HR 看到这个在简历上会怎么想？ |
+| 时间和精力 | 周数 × 小时/周 |
+| 机会成本 | 这段时间不能做什么？ |
+| 风险 | 内容过时？品牌弱？太基础？ |
+| 作品产出 | 能产出一个可展示的成果吗？ |
 
-## Veredictos
+## 结论
 
-- **HACER** → plan de 4-12 semanas con entregables semanales y scoreboard
-- **NO HACER** → alternativa mejor con justificación
-- **HACER CON TIMEBOX** (máx X semanas) → plan condensado, solo lo esencial
+- **值得做** → 4-12 周计划，含每周交付物
+- **不值得做** → 推荐更好的替代方案并说明理由
+- **限时做**（最多 X 周）→ 精简计划，只做核心内容
 
-## Prioridad
+## 优先级参考
 
-Formación que mejore credibilidad en "production-grade AI":
-1. Evals y testing de LLMs
-2. Observability y monitoring
-3. Cost/reliability trade-offs
-4. AI governance y safety
-5. Enterprise AI architecture
+对国内技术岗位最有价值的培训方向：
+1. 系统设计与架构（DDD、高并发实战）
+2. 云原生技术（K8s、Service Mesh）
+3. AI 应用开发（RAG、Agent、大模型部署）
+4. 开源项目贡献（比证书更有说服力）
+5. 技术写作与分享（建立个人品牌）

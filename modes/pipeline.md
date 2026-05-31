@@ -1,57 +1,39 @@
-# Mode: pipeline — URL Inbox (Second Brain)
+# Mode: pipeline -- URL 收件箱（第二大脑）
 
-Process job URLs stored in `data/pipeline.md`. The user adds URLs at any time and then executes `/career-ops pipeline` to process them all.
+处理存储在 `data/pipeline.md` 中的岗位 URL。用户随时添加 URL，然后执行 `/career-ops pipeline` 批量处理。
 
-## Workflow
+## 工作流
 
-1. **Read** `data/pipeline.md` → search for `- [ ]` items in the "Pending" section
-2. **For each pending URL**:
-   a. Calculate the next sequential `REPORT_NUM` (read `reports/`, take the highest number + 1)
-   b. **Extract JD** using Playwright (browser_navigate + browser_snapshot) → WebFetch → WebSearch
-   c. If the URL is not accessible → mark as `- [!]` with a note and continue
-   d. **Execute full auto-pipeline**: Evaluation A-F → Report .md → PDF (if score >= 3.0) → Tracker
-   e. **Move from "Pending" to "Processed"**: `- [x] #NNN | URL | Company | Role | Score/5 | PDF ✅/❌`
-3. **If there are 3+ pending URLs**, launch agents in parallel (Agent tool with `run_in_background`) to maximize speed.
-4. **At the end**, show summary table:
+1. **读取** `data/pipeline.md` → 搜索"待处理"区块中的 `- [ ]` 项
+2. **对每个待处理 URL**：
+   a. 计算下一个序号 REPORT_NUM（读取 reports/，取最大编号+1）
+   b. **提取 JD** 使用 Playwright（browser_navigate + browser_snapshot）→ WebFetch → WebSearch
+   c. 如果 URL 不可访问 → 标记为 `- [!]` 并标注原因，继续
+   d. **执行完整 auto-pipeline**: A-F 评估 → 报告 .md → PDF（如评分 >= 3.0）→ 追踪表
+   e. **从"待处理"移动到"已处理"**: `- [x] #NNN | URL | 公司 | 岗位 | 评分/5 | PDF ✅/❌`
+3. **如果有 3+ 待处理 URL**，启动并行 agent（Agent 工具 + run_in_background）最大化速度。
+4. **结束时**，显示摘要表格
 
-```
-| # | Company | Role | Score | PDF | Recommended action |
-```
-
-## Format of pipeline.md
+## pipeline.md 格式
 
 ```markdown
-## Pending
-- [ ] https://jobs.example.com/posting/123
-- [ ] https://boards.greenhouse.io/company/jobs/456 | Company Inc | Senior PM
-- [!] https://private.url/job — Error: login required
+## 待处理
+- [ ] https://www.zhipin.com/job_detail/xxx.html
+- [ ] https://www.liepin.com/job/xxx.shtml | 某科技公司 | 高级后端
+- [!] https://private.url/job — 错误: 需要登录
 
-## Processed
-- [x] #143 | https://jobs.example.com/posting/789 | Acme Corp | AI PM | 4.2/5 | PDF ✅
-- [x] #144 | https://boards.greenhouse.io/xyz/jobs/012 | BigCo | SA | 2.1/5 | PDF ❌
+## 已处理
+- [x] #001 | https://... | 字节跳动 | 后端开发 | 4.2/5 | PDF ✅
+- [x] #002 | https://... | 美团 | 架构师 | 3.1/5 | PDF ❌
 ```
 
-## Intelligent JD detection from URL
+## 从 URL 智能检测 JD
 
-1. **Playwright (preferred):** `browser_navigate` + `browser_snapshot`. Works with all SPAs.
-2. **WebFetch (fallback):** For static pages or when Playwright is unavailable.
-3. **WebSearch (last resort):** Search in secondary portals that index the JD.
+1. **Playwright（首选）:** `browser_navigate` + `browser_snapshot`
+2. **WebFetch（备选）:** 静态页面或 Playwright 不可用时
+3. **WebSearch（最后手段）:** 在二级门户搜索
 
-**Special cases:**
-- **LinkedIn**: May require login → mark `[!]` and ask the user to paste the text
-- **PDF**: If the URL points to a PDF, read it directly with the Read tool
-- **`local:` prefix**: Read the local file. Example: `local:jds/linkedin-pm-ai.md` → read `jds/linkedin-pm-ai.md`
-
-## Automatic numbering
-
-1. List all files in `reports/`
-2. Extract the number from the prefix (e.g., `142-medispend...` → 142)
-3. New number = maximum found + 1
-
-## Source synchronization
-
-Before processing any URL, verify sync:
-```bash
-node cv-sync-check.mjs
-```
-If there is a desynchronization, warn the user before continuing.
+**特殊情况:**
+- **BOSS直聘/猎聘**: 可能需要登录 → 标记 `[!]` 请用户粘贴文本
+- **PDF**: 如果 URL 指向 PDF，直接用 Read 工具读取
+- **`local:` 前缀**: 读取本地文件。示例: `local:jds/liepin-pm-ai.md`

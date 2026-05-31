@@ -1,53 +1,57 @@
-# Mode: contacto -- LinkedIn Power Move
+# Mode: contacto -- 社交外联
 
-1. **Identify targets** via WebSearch:
-   - Hiring manager of the team
-   - Assigned recruiter
-   - 2-3 team peers (people with similar roles)
-   - Interviewer (if the candidate already has a scheduled interview)
+1. **识别目标人物** 通过 WebSearch：
+   - 团队招聘经理
+   - 分配的 HR/招聘专员
+   - 2-3 名团队成员（相似岗位的同事）
+   - 面试官（如果候选人已有面试安排）
 
-2. **Classify contact type** -- ask the candidate or infer from context:
-   - **Recruiter** -- person whose role is talent acquisition, sourcing, or recruiting
-   - **Hiring Manager** -- the person who leads the hiring team
-   - **Peer** -- someone with a similar role in the team (indirect referral)
-   - **Interviewer** -- someone who will interview the candidate (known date)
+2. **分类联系人类型** -- 询问候选人或从上下文推断：
+   - **HR/招聘专员** -- 角色是人才获取、猎头或招聘
+   - **招聘经理** -- 领导招聘团队的人
+   - **同行** -- 团队中相似岗位的成员（间接内推）
+   - **面试官** -- 将要面试候选人的人（已确定日期）
 
-3. **Select primary target**: the person who would benefit most from the candidate being there
+3. **选择首要目标**: 候选人加入后受益最大的人
 
-4. **Generate message** with a 3-sentence framework adapted to the contact type:
+4. **生成消息** 三段式框架，按联系人类型调整：
 
-   ### Recruiter
-   - **Sentence 1 (Fit)**: Direct match criteria -- role, relevant experience, availability, or location
-   - **Sentence 2 (Proof)**: Data that answers their screening questions before they ask them (e.g., "5 years building ML pipelines, currently in Berlin, available immediately")
-   - **Sentence 3 (CTA)**: "Happy to share my CV if this aligns with what you're looking for"
+   ### HR/招聘专员
+   - **第一句（匹配度）**: 直接匹配标准 — 岗位、相关经验、可到岗时间、地点
+   - **第二句（证明）**: 在他们提问前回答筛选问题的数据（如"5年后端开发经验，目前在北京，随时可入职"）
+   - **第三句（CTA）**: "如果合适的话，我可以发简历给您"
 
-   ### Hiring Manager
-   - **Sentence 1 (Hook)**: Specific challenge their team is facing (extracted from the JD, company blog, or news)
-   - **Sentence 2 (Proof)**: Candidate's greatest quantifiable achievement showing they have solved similar problems
-   - **Sentence 3 (CTA)**: "Would love to hear how your team is approaching [specific challenge]"
+   ### 招聘经理
+   - **第一句（钩子）**: 他们团队面临的具体挑战（从 JD、公司博客或新闻中提取）
+   - **第二句（证明）**: 候选人解决过类似问题的最大可量化成果
+   - **第三句（CTA）**: "想了解一下你们团队在 [具体挑战] 方面是怎么做的"
 
-   ### Peer (referral)
-   - **Sentence 1 (Interest)**: Genuine reference to their work -- blog post, talk, open-source project, or publication
-   - **Sentence 2 (Connection)**: Something the candidate is doing in the same space (NOT a job pitch)
-   - **Sentence 3 (CTA)**: "I've been working on similar problems at [company], would love to hear your take on [topic]"
-   - **Note**: DO NOT ask for a job. The referral happens naturally if the conversation flows.
+   ### 同行（内推）
+   - **第一句（兴趣）**: 对他们工作的真诚引用 — 博客文章、演讲、开源项目或论文
+   - **第二句（连接）**: 候选人在同一领域正在做的事情（不是求职推销）
+   - **第三句（CTA）**: "我目前在 [公司] 做类似的问题，想听听你对 [话题] 的看法"
+   - **注意**: 不要直接求内推。如果对话顺畅，推荐自然会发生。
 
-   ### Interviewer (pre-interview)
-   - **Sentence 1 (Research)**: Reference to something specific from their work or trajectory
-   - **Sentence 2 (Context)**: Light connection to the candidate's experience in that area
-   - **Sentence 3 (CTA)**: "Looking forward to our conversation on [date]"
-   - **Note**: Light tone, not desperate. The goal is to show that you prepared.
+   ### 面试官（面试前）
+   - **第一句（调研）**: 引用他们工作或经历中具体的内容
+   - **第二句（背景）**: 候选人相关经验的轻松连接
+   - **第三句（CTA）**: "期待 [日期] 的交流"
+   - **注意**: 轻松语气，不刻意。目标是展示你有备而来。
 
-5. **Versions**:
-   - EN (default)
-   - ES (if Spanish company)
+5. **平台选择**:
+   - **脉脉**: 国内互联网公司首选，偏同行交流
+   - **BOSS直聘**: 直接联系HR/招聘专员
+   - **LinkedIn**: 外企中国分部、跨国岗位
+   - **微信**: 仅在有共同联系人牵线时使用
 
-6. **Alternative targets** with justification for why they are good second choices
+6. **备选目标** 及为什么他们是好的第二选择
 
-**Message rules:**
-- Maximum 300 characters (LinkedIn connection request limit)
-- NO corporate-speak
-- NO "I'm passionate about..."
-- Something that makes them want to respond
-- NEVER share phone number
-- The contact type changes the EMPHASIS, not the structure
+**消息规则:**
+- 脉脉私信/Action 消息：最多 300 字（脉脉会员限制）
+- BOSS直聘开场白：50 字以内，快速表明意图
+- LinkedIn 连接请求：最多 300 字符
+- 不用套话官话
+- 不说"我对...充满热情"
+- 说能让人想回复的内容
+- 绝不分享手机号
+- 联系人类型改变的是内容侧重，不是结构
