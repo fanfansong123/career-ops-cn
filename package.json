@@ -1,6 +1,6 @@
 {
   "name": "career-ops-cn",
-  "version": "0.1.0",
+  "version": "1.9.0",
   "description": "AI求职指挥中心 — 基于 Claude Code 的智能求职系统，适配国内招聘环境",
   "scripts": {
     "doctor": "node doctor.mjs",
