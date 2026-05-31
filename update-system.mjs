@@ -23,9 +23,9 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = __dirname;
 
-const CANONICAL_REPO = 'https://github.com/santifer/career-ops.git';
-const RAW_VERSION_URL = 'https://raw.githubusercontent.com/santifer/career-ops/main/VERSION';
-const RELEASES_API = 'https://api.github.com/repos/santifer/career-ops/releases/latest';
+const CANONICAL_REPO = 'https://github.com/fanfansong123/career-ops-cn.git';
+const RAW_VERSION_URL = 'https://raw.githubusercontent.com/fanfansong123/career-ops-cn/main/VERSION';
+const RELEASES_API = 'https://api.github.com/repos/fanfansong123/career-ops-cn/releases/latest';
 
 // System layer paths — ONLY these files get updated
 const SYSTEM_PATHS = [
@@ -45,14 +45,16 @@ const SYSTEM_PATHS = [
   'modes/tracker.md',
   'modes/training.md',
   'modes/latex.md',
+  'modes/interview-prep.md',
+  'modes/patterns.md',
+  'modes/followup.md',
+  'modes/update.md',
   'modes/de/',
   'modes/fr/',
   'modes/ja/',
   'modes/pt/',
   'modes/ru/',
   'CLAUDE.md',
-  'AGENTS.md',
-  'GEMINI.md',
   'generate-pdf.mjs',
   'generate-latex.mjs',
   'merge-tracker.mjs',
@@ -62,31 +64,26 @@ const SYSTEM_PATHS = [
   'cv-sync-check.mjs',
   'update-system.mjs',
   'scan.mjs',
+  'scan-jobs.mjs',
+  'generate-tailored-pdf.mjs',
+  'tools/',
   'providers/',
   'doctor.mjs',
   'check-liveness.mjs',
-  'liveness-core.mjs',
-  'liveness-browser.mjs',
   'analyze-patterns.mjs',
   'followup-cadence.mjs',
-  'gemini-eval.mjs',
-  'test-all.mjs',
+  // batch
   'batch/batch-prompt.md',
   'batch/batch-runner.sh',
-  'dashboard/',
+  // 静态资源
   'templates/',
   'fonts/',
   '.agents/',
   '.claude/skills/',
-  '.gemini/commands/',
-  'docs/',
   'writing-samples/README.md',
   'VERSION',
-  'DATA_CONTRACT.md',
-  'CONTRIBUTING.md',
   'README.md',
   'LICENSE',
-  'CITATION.cff',
   '.github/',
   'package.json',
 ];
