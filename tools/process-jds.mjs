@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 // process-jds.mjs — 处理 jds/ 中通过 Bookmarklet 捕获的 JD
-// 输出格式化的 JD 文本，供 /career-ops oferta 评估
+// 支持单条查看、批量评估、标记已处理
 //
 // 用法:
 //   node tools/process-jds.mjs              # 列出待处理 JD
 //   node tools/process-jds.mjs --id=xxx     # 输出指定 JD 的完整文本
-//   node tools/process-jds.mjs --all        # 批量输出所有待处理 JD
+//   node tools/process-jds.mjs --all        # 输出所有待处理 JD 完整文本
+//   node tools/process-jds.mjs --batch      # 生成批量评估提示词（一次性评估所有）
 //   node tools/process-jds.mjs --mark=xxx   # 标记指定 JD 为已处理
+//   node tools/process-jds.mjs --mark-all   # 标记所有待处理 JD 为已处理
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -20,6 +22,8 @@ const args = process.argv.slice(2);
 const getId = () => args.find(a => a.startsWith('--id='))?.split('=')[1];
 const getAll = () => args.includes('--all');
 const getMark = () => args.find(a => a.startsWith('--mark='))?.split('=')[1];
+const isBatch = () => args.includes('--batch');
+const isMarkAll = () => args.includes('--mark-all');
 
 // 读取已处理列表
 function getProcessed() {
@@ -124,6 +128,48 @@ if (getAll()) {
     console.log('='.repeat(60));
     console.log(formatJD(jd));
   }
+  process.exit(0);
+}
+
+// --batch: 生成批量评估提示词（一次性粘贴给 Claude）
+if (isBatch()) {
+  if (unprocessed.length === 0) {
+    console.log('✅ 没有待处理的 JD。');
+    process.exit(0);
+  }
+
+  const jds = unprocessed.map(f => readJD(f)).filter(Boolean);
+
+  console.log(`请对以下 ${jds.length} 个岗位进行批量评估。每个岗位输出 A-G 完整评分 + 建议。\n`);
+  console.log('='.repeat(60));
+  console.log(`总共 ${jds.length} 个岗位待评估\n`);
+
+  for (let i = 0; i < jds.length; i++) {
+    const jd = jds[i];
+    console.log(`\n${'─'.repeat(50)}`);
+    console.log(`📌 岗位 ${i + 1}/${jds.length}`);
+    console.log('─'.repeat(50));
+    console.log(formatJD(jd));
+  }
+
+  console.log(`\n${'='.repeat(60)}`);
+  console.log('📋 评估完成后，运行: node tools/process-jds.mjs --mark-all');
+
+  process.exit(0);
+}
+
+// --mark-all: 标记所有未处理 JD 为已处理
+if (isMarkAll()) {
+  if (unprocessed.length === 0) {
+    console.log('✅ 没有待处理的 JD。');
+    process.exit(0);
+  }
+  for (const f of unprocessed) {
+    processed.add(f);
+    console.log(`✅ ${f}`);
+  }
+  saveProcessed(processed);
+  console.log(`\n已标记 ${unprocessed.length} 个 JD 为已处理`);
   process.exit(0);
 }
 
