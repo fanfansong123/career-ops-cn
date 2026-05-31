@@ -30,10 +30,12 @@
 | /career-ops deep | ✅ 已测试 | 6 维度深度公司研究 |
 | /career-ops tracker | ✅ 已测试 | 投递追踪看板 |
 | /career-ops scan | ✅ 已测试 | 搜索引擎 + Bookmarklet 双通道扫岗位 |
-| **Bookmarklet JD 捕获** | ✅ 已测试 | 一键从 BOSS直聘/猎聘 页面提取 JD |
-| /career-ops batch | ⚠️ 未测试 | 批量处理 |
-| /career-ops training | ⚠️ 未测试 | 培训/证书价值评估 |
-| Go TUI 仪表盘 | ⚠️ 未测试 | 终端看板（原版自带，未改动） |
+| **Bookmarklet JD 捕获** | ✅ 已测试 | 一键从 BOSS直聘/猎聘 页面提取 5 字段 |
+| /career-ops training | ✅ 已测试 | 培训/证书/项目 6 维度价值评估 |
+| /career-ops project | ✅ 已测试 | 作品集项目方向评估 |
+| 批量评估 | ✅ 已测试 | Bookmarklet 攒 JD → --batch 一键生成评估提示词 |
+| /career-ops update | ✅ 已适配 | 指向 career-ops-cn 仓库 |
+| Go TUI 仪表盘 | ⚠️ 未适配 | 终端看板（原版自带） |
 
 ## 快速开始
 
@@ -65,14 +67,30 @@ claude
 # 仅评分
 /career-ops oferta
 
+# 多岗位对比排名
+/career-ops ofertas
+
 # 生成定制 PDF
 /career-ops pdf
 
 # 扫描岗位
 /career-ops scan
 
-# 面试准备
+# 面试准备（含差距分析 + 学习路线）
 /career-ops interview-prep
+
+# 深度公司研究
+/career-ops deep
+
+# 外联消息生成
+/career-ops contacto
+
+# 投递追踪
+/career-ops tracker
+
+# 培训/项目价值评估
+/career-ops training
+/career-ops project
 ```
 
 ### Bookmarklet 一键捕获 JD（推荐）
@@ -91,10 +109,12 @@ claude
 
 5. 回到终端: node tools/process-jds.mjs 查看待处理 JD
 
-6. 把 JD 文本粘贴给我，跑 oferta 评分
+6. 单个: 把 JD 文本粘贴给我 → 跑 oferta 评分
+
+7. 批量: node tools/process-jds.mjs --batch → 粘贴给我 → 统一评估
 ```
 
-**原理：** Bookmarklet 是一段保存在书签栏的 JavaScript。点击后在你已登录的页面内运行，直接读取 DOM 提取公司名、岗位名、薪资、JD 正文，通过 fetch 发送到本地服务器。完全绕开反爬，不需要 Playwright。
+**原理：** Bookmarklet 是一段保存在书签栏的 JavaScript。点击后在你已登录的页面内运行，直接读取 DOM 提取公司名、岗位名、薪资、地点、经验、JD 正文，通过 fetch 发送到本地服务器。完全绕开反爬，不需要 Playwright。
 
 | Bookmarklet | 适用平台 |
 |------|------|
@@ -102,21 +122,25 @@ claude
 | 猎聘 | liepin.com 职位详情页 |
 | 通用版 | 字节/阿里/腾讯/美团/拉勾/电鸭/V2EX 等 |
 
-## 已跑通的完整流程
+## 已跑通
 
-1. Bookmarklet 一键从 BOSS直聘 捕获 JD → 本地 `jds/` 目录
-2. 粘贴 JD 文本 → A-G 评分（含 Block G 真实性评估）
-3. 根据 JD 关键词自动改写简历 → 阿里普惠体中文 PDF
-4. 面试准备：八股文复习清单 + 算法刷题策略 + STAR 故事库映射 + JD 差距分析 + 学习路线
-5. 多岗位对比排名（9 维度加权矩阵）
-6. 投递追踪表（状态流转 + 统计）
+1. **JD 捕获**: Bookmarklet 一键从 BOSS直聘提取 JD（公司/岗位/薪资/地点/经验 5 字段）
+2. **自动评分**: 粘贴 JD → A-G 七维度评估（含薪资调研 + 岗位真实性判断）
+3. **PDF 生成**: JD 关键词注入 + 阿里普惠体中文字体 + A4 输出
+4. **面试准备**: 八股文 + 算法刷题 + 系统设计 + STAR 故事库 + JD 差距分析 + 学习路线
+5. **多岗位对比**: 9 维度加权排名 + 时间因素策略建议
+6. **深度公司研究**: 6 维度（技术战略/近期动态/工程文化/技术挑战/竞品/候选人角度）
+7. **外联消息**: 脉脉/BOSS直聘/LinkedIn 三大平台，按 HR/技术负责人/同行 分类生成
+8. **批量评估**: Bookmarklet 逐条捕获 → process-jds --batch 生成提示词 → 统一评估
+9. **投递追踪**: 状态流转（已评估→已投递→面试中→Offer） + 统计
+10. **培训评估**: 6 维度评估培训/证书/项目价值 + 替代方案对比
 
 ## 已知问题
 
-- BOSS直聘/猎聘 页面 DOM 结构可能变化，Bookmarklet 需偶尔更新 CSS 选择器
-- 部分 mode 文件（training/batch）已写但未实测
+- BOSS直聘/猎聘 DOM 结构可能变化，Bookmarklet 需偶尔更新选择器
+- `patterns`（被拒分析）和 `followup`（跟进提醒）需较多投递数据才能发挥价值，未实测
 - 原版 Go TUI 仪表盘未适配中文
-- 中文字体文件较大（~8MB），首次生成 PDF 需加载字体
+- 中文字体文件较大（~8MB），首次生成 PDF 需加载
 
 ## 技术栈
 
