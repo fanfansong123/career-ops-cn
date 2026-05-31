@@ -19,6 +19,10 @@ batch/tracker-additions/**/*.tsv
 jds/*
 !jds/.gitkeep
 
+# Interview prep (user's personal stories and reports)
+interview-prep/*
+!interview-prep/.gitkeep
+
 # Writing samples (user's personal files — never committed)
 writing-samples/*
 !writing-samples/README.md
