@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career-Ops-CN — JD 捕获工具安装</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    max-width: 640px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #333;
+    line-height: 1.6;
+  }
+  h1 { font-size: 24px; margin-bottom: 8px; }
+  .subtitle { color: #666; margin-bottom: 24px; }
+  .card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .card h2 { font-size: 16px; margin: 0 0 8px 0; }
+  .card p { margin: 4px 0; color: #666; font-size: 14px; }
+  .btn {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: grab;
+    margin-right: 8px;
+    margin-top: 8px;
+  }
+  .btn-primary { background: #1677ff; color: #fff; }
+  .btn-primary:hover { background: #4096ff; }
+  .step {
+    background: #f6f8fa;
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+  }
+  .step code {
+    background: #e8e8e8;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 13px;
+  }
+  .step-num {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: #1677ff;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-size: 12px;
+    margin-right: 8px;
+  }
+</style>
+</head>
+<body>
+
+<h1>🔗 Career-Ops-CN JD 捕获工具</h1>
+<p class="subtitle">一键从招聘页面提取 JD，自动保存到本地供 AI 评估</p>
+
+<h2>安装步骤</h2>
+
+<div class="step">
+  <span class="step-num">1</span>
+  确保浏览器<strong>显示书签栏</strong>（Chrome: <code>Cmd+Shift+B</code> / Edge: <code>Ctrl+Shift+B</code>）
+</div>
+
+<div class="step">
+  <span class="step-num">2</span>
+  终端启动本地服务: <code>node tools/jd-inbox-server.mjs</code>
+</div>
+
+<div class="step">
+  <span class="step-num">3</span>
+  把下面的按钮<strong>拖到书签栏</strong>
+</div>
+
+<div class="step">
+  <span class="step-num">4</span>
+  打开任意招聘详情页（BOSS直聘/猎聘/大厂careers页），<strong>点击书签栏的按钮</strong>即可捕获 JD
+</div>
+
+<h2>可用 Bookmarklet</h2>
+
+<div class="card">
+  <h2>🎯 BOSS直聘</h2>
+  <p>适用于 zhipin.com 职位详情页（需已登录）</p>
+  <a class="btn btn-primary" href="javascript:void%20function(){var%20e=document.createElement(%22script%22);e.src=%22http://localhost:8787/bookmarklet/boss-zhipin.js%22,document.body.appendChild(e)}();">BOSS直聘 JD 捕获</a>
+</div>
+
+<div class="card">
+  <h2>🔍 猎聘</h2>
+  <p>适用于 liepin.com 职位详情页（需已登录）</p>
+  <a class="btn btn-primary" href="javascript:void%20function(){var%20e=document.createElement(%22script%22);e.src=%22http://localhost:8787/bookmarklet/liepin.js%22,document.body.appendChild(e)}();">猎聘 JD 捕获</a>
+</div>
+
+<div class="card">
+  <h2>🌐 通用版</h2>
+  <p>适用于字节/阿里/腾讯/美团/小红书/DeepSeek/拉勾/电鸭/V2EX 等</p>
+  <a class="btn btn-primary" href="javascript:void%20function(){var%20e=document.createElement(%22script%22);e.src=%22http://localhost:8787/bookmarklet/universal.js%22,document.body.appendChild(e)}();">通用 JD 捕获</a>
+</div>
+
+<p style="color:#999;font-size:12px;margin-top:24px;">
+  数据仅保存在本地 <code>jds/</code> 目录，不会上传到任何第三方服务器。
+</p>
+
+</body>
+</html>
